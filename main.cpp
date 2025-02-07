@@ -44,7 +44,7 @@ unsigned int galutinis_pazymys_mediana(Studentas &studentas) {
     if(studentas.pazymiai.size()%2==0) {
         mediana = studentas.pazymiai[studentas.pazymiai.size()/2] + studentas.pazymiai[studentas.pazymiai.size()/2-1];
     } else {
-        mediana = studentas.pazymiai[studentas.pazymiai.size()/2];
+        mediana = studentas.pazymiai[round((studentas.pazymiai.size())/2.0)];
     }
     return static_cast<int>(mediana*0.4 + studentas.egzamino_rezultatas*0.6);
 }
