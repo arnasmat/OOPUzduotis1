@@ -56,8 +56,40 @@ unsigned int galutinis_pazymys_mediana(Studentas &studentas) {
     } else {
         mediana = studentas.pazymiai[(studentas.pazymiai.size()/2.0)];
     }
-    std::cout<<"Mediana: "<<mediana<<std::endl;
     return static_cast<int>(mediana*0.4 + studentas.egzamino_rezultatas*0.6);
+}
+
+void isvestis(std::vector<Studentas>& studentai) {
+    char pasirinkimas{};
+    std::cout<<"Pasirinkite ka norite matyti: v - vidurkis, m - mediana, a - abu: ";
+    while(pasirinkimas != 'v' && pasirinkimas != 'm' && pasirinkimas != 'a') {
+        std::cin>>pasirinkimas;
+        if(pasirinkimas != 'v' && pasirinkimas !=  'm' && pasirinkimas != 'a') {
+            std::cout<<"Neteisingas pasirinkimas. Prasome ivesti v, m arba a.";
+        }
+    }
+
+    std::cout<<"Vardas    Pavarde    ";
+    if(pasirinkimas=='v' || pasirinkimas=='a') {
+        std::cout<<"Galutinis (Vid.)  ";
+    }
+    if(pasirinkimas=='a') std::cout<<"  ";
+    if(pasirinkimas=='m' || pasirinkimas=='a') {
+        std::cout<<"Galutinis (Med.)";
+    }
+    std::cout<<std::endl;
+    std::cout<<"------------------------------------------------------------"<<std::endl;
+    for(auto i: studentai) {
+        std::cout<<i.vardas<<" "<<i.pavarde<<" ";
+        if(pasirinkimas=='v' || pasirinkimas=='a') {
+            std::cout<<galutinis_pazymys_vidurkis(i);
+        }
+        if(pasirinkimas=='a') std::cout<<"/  ";
+        if(pasirinkimas=='m' || pasirinkimas=='a') {
+            std::cout<<galutinis_pazymys_mediana(i);
+        }
+        std::cout<<std::endl;
+    }
 }
 
 
@@ -65,6 +97,5 @@ int main() {
     std::vector<Studentas> studentai{};
     studentu_ivestis(studentai);
     studentu_atspausdinimas(studentai);
-    std::cout<<galutinis_pazymys_vidurkis(studentai[0])<<std::endl;
-    std::cout<<galutinis_pazymys_mediana(studentai[0])<<std::endl;
+    isvestis(studentai);
 }
