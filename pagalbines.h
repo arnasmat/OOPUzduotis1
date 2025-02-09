@@ -16,29 +16,30 @@ struct Studentas {
     unsigned int egzamino_rezultatas{};
 };
 
-void studentu_ivestis(std::vector<Studentas>& studentai) {
+void studentu_ivestis_vector(std::vector<Studentas>& studentai) {
     while(true) {
         std::cout<<"Iveskite studentus arba noredami baigti iveskite 'n': "<<std::endl;
         Studentas laikinas_studentas{};
         std::cout<<"Iveskit studento varda ir pavarde: ";
         std::cin>>laikinas_studentas.vardas;
+
         if(laikinas_studentas.vardas == "n") {
             break;
         }
+
         std::cin>>laikinas_studentas.pavarde;
-        std::cout<<"Iveskite kiek pazymiu gavo studentas: ";
-        int pazymiu_kiekis{};
-        std::cin>>pazymiu_kiekis;
-        std::cout<<"Iveskite pazymius: ";
-        for(int j=0; j<pazymiu_kiekis; j++) {
-            int pazymys{0};
-            while(pazymys < 1 || pazymys > 10) {
-                std::cin>>pazymys;
-                if(pazymys < 1 || pazymys > 10) {
-                    std::cout<<"Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
-                }
+        std::cout<<"Iveskite pazymius, iveskite -1, jeigu norite baigti pazymiu ivedima: ";
+        int pazymys{0};
+        while(true) {
+            std::cin >> pazymys;
+            if(pazymys == -1) {
+                break;
             }
-            laikinas_studentas.pazymiai.push_back(pazymys);
+            if(pazymys >= 1 && pazymys <= 10) {
+                laikinas_studentas.pazymiai.push_back(pazymys);
+            } else {
+                std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
+            }
         }
         std::cout<<"Iveskite egzamino rezultata: ";
         std::cin>>laikinas_studentas.egzamino_rezultatas;
