@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <random>
 
 struct Studentas {
     std::string vardas{}, pavarde{};
@@ -14,10 +15,5 @@ struct Studentas {
     unsigned int *pazymiai{nullptr};
     unsigned int egzamino_rezultatas{};
 };
-
-void studentu_ivestis(std::vector<Studentas>& studentai);
-float galutinis_pazymys_vidurkis(Studentas &studentas);
-float galutinis_pazymys_mediana(Studentas &studentas);
-void isvestis(std::vector<Studentas>& studentai);
 
 #endif // PAGALBINES_MIX_H
