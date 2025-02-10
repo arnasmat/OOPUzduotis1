@@ -72,8 +72,19 @@ void isvestis(std::vector<Studentas>& studentai) {
         }
     }
 
-    std::cout<<std::left<<std::setw(15)<<"Pavarde"<<" ";
-    std::cout<<std::left<<std::setw(15)<<"Vardas";
+    int longest_name{0};
+    int longest_surname{0};
+    for(auto i: studentai) {
+        if(i.vardas.length() > longest_name) {
+            longest_name = i.vardas.length();
+        }
+        if(i.pavarde.length() > longest_surname) {
+            longest_surname = i.pavarde.length();
+        }
+    }
+
+    std::cout<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde";
+    std::cout<<std::left<<std::setw(longest_name > 6 ? longest_surname+2 : 8)<<"Vardas";
     if(pasirinkimas=='v' || pasirinkimas=='a') {
         std::cout<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
     }
@@ -84,7 +95,8 @@ void isvestis(std::vector<Studentas>& studentai) {
     std::cout<<std::endl;
     std::cout<<"------------------------------------------------------------"<<std::endl;
     for(auto i: studentai) {
-        std::cout<<std::left<<std::setw(15)<<i.pavarde<<" "<<std::left<<std::setw(15)<<i.vardas<<" ";
+        std::cout<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)
+            <<i.pavarde<<std::left<<std::setw(longest_name > 6 ? longest_surname+2 : 8)<<i.vardas;
         if(pasirinkimas=='v' || pasirinkimas=='a') {
             std::cout<<std::setw(17)<<std::left<<std::fixed<<std::setprecision(2)<<galutinis_pazymys_vidurkis(i);
         }
