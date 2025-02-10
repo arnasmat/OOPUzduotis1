@@ -44,7 +44,12 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
         std::cout<<"Iveskit studento varda ir pavarde: ";
         std::cin>>laikinas_studentas.vardas;
 
-        if(laikinas_studentas.vardas == "n") {
+        while (laikinas_studentas.vardas == "n" && studentai.size() == 0) {
+            std::cout<<"Iveskite bent viena studenta. "<<std::endl;
+            std::cin>>laikinas_studentas.vardas;
+        }
+
+        if(laikinas_studentas.vardas == "n" && studentai.size() > 0) {
             break;
         }
 
@@ -53,6 +58,10 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
         int pazymys{0};
         while(true) {
             std::cin >> pazymys;
+            while(pazymys == -1 && laikinas_studentas.pazymiu_kiekis == 0) {
+                std::cout << "Iveskite bent viena pazymi ";
+                std::cin >> pazymys;
+            }
             if(!std::cin.fail()) {
                 if(pazymys == -1) {
                     break;
@@ -209,7 +218,7 @@ void isvestis(std::vector<Studentas>& studentai) {
 }
 
 int main() {
-    std::vector<Studentas> studentai;
+    std::vector<Studentas> studentai{};
     while(true){
         int menu = meniu();
         switch(menu) {
