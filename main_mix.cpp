@@ -17,7 +17,7 @@ int meniu() {
         std::cin>>meniu;
         if(std::cin.fail()) {
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
             std::cout<<"Iveskite skaiciu nuo 1 iki 4"<<std::endl;
             continue;
         }
@@ -64,8 +64,8 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
                     std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
                 }
             } else {
-                std::cin.clear(); // Clear the error state
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the invalid input
+                std::cin.clear();
+                std::cin.ignore();
                 std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
             }
         }
@@ -76,7 +76,7 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
                 std::cin>>laikinas_studentas.egzamino_rezultatas;
                 if(std::cin.fail()) {
                     std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.ignore();
                     std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
                     continue;
                 }
@@ -224,7 +224,6 @@ int main() {
             break;
             case 4:
                 return 0;
-            break;
 
         }
         isvestis(studentai);
