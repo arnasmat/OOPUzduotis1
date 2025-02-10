@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <random>
 
 struct Studentas {
