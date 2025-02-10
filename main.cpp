@@ -1,9 +1,7 @@
 #include "pagalbines_mix.h"
-#include "pagalbines.h"
-
 
 int main() {
-    std::vector<Studentas> studentai{};
-    studentu_ivestis(studentai);
-    isvestis(studentai);
+    std::vector<Studentas> studentai;
+    mix_studentu_ivestis(studentai);
+    mix_isvestis(studentai);
 }
