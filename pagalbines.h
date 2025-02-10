@@ -8,12 +8,6 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <cmath>
-#include <algorithm>
-
-
-
-
 
 void isvestis(std::vector<Studentas>& studentai) {
     char pasirinkimas{};
