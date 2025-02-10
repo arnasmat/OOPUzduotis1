@@ -4,6 +4,29 @@
 
 #include "pagalbines_vec.h"
 
+int meniu() {
+    int meniu{0};
+    std::cout<<"------------------------------------------------------------"<<std::endl;
+    std::cout<<"Pasirinkite programos eiga: "<<std::endl;
+    std::cout<<"1. Studentus ir pazymius ivesti ranka"<<std::endl;
+    std::cout<<"2. Generuoti pazymius, bet studentus ivesti ranka"<<std::endl;
+    std::cout<<"3. Generuoti pazymius ir studentus"<<std::endl;
+    std::cout<<"4. Baigti programos darba"<<std::endl;
+    std::cout<<"------------------------------------------------------------"<<std::endl;
+    while(meniu<1 || meniu>4) {
+        std::cin>>meniu;
+        if(std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout<<"Iveskite skaiciu nuo 1 iki 4"<<std::endl;
+            continue;
+        }
+        if(meniu<1 || meniu>4)
+            std::cout<<"Iveskite skaiciu nuo 1 iki 4"<<std::endl;
+    }
+    return meniu;
+}
+
 void studentu_ivestis(std::vector<Studentas>& studentai) {
     while(true) {
         std::cout<<"Iveskite studentus arba noredami baigti iveskite 'n': "<<std::endl;
@@ -51,6 +74,58 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
                 std::cout<<"Ivestas netinkamas egzamino rezultatas. Iveskite egzamino rezultata is naujo: ";
             }
         }
+        studentai.push_back(laikinas_studentas);
+    }
+}
+
+void studentu_ivestis_random_2(std::vector<Studentas>& studentai) {
+    while(true) {
+        std::cout<<"Iveskite studentus arba noredami baigti iveskite 'n': "<<std::endl;
+        Studentas laikinas_studentas{};
+        std::cout<<"Iveskit studento varda ir pavarde: ";
+        std::cin>>laikinas_studentas.vardas;
+
+        if(laikinas_studentas.vardas == "n") {
+            break;
+        }
+        std::cin>>laikinas_studentas.pavarde;
+
+        srand(time(nullptr));
+        int random_pazymiu_kiekis{rand() % 10 + 1};
+        for(int i=0; i<random_pazymiu_kiekis; i++) {
+            laikinas_studentas.pazymiai.push_back(rand()%10 + 1);
+
+        }
+        laikinas_studentas.egzamino_rezultatas = rand() % 10 + 1;
+        studentai.push_back(laikinas_studentas);
+    }
+}
+
+void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
+
+    std::vector<std::string> vyriski_vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Tomas", "Darius", "Marius", "Rokas", "Mantas", "Mantas"};
+    std::vector<std::string> moteriski_vardai = {"Ona", "Petra", "Antanina", "Kazyte", "Toma", "Darija", "Marija", "Rokas", "Mante", "Mante"};
+
+    std::vector<std::string> vyriskos_pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Tomaitis", "Dariukaitis", "Mariukaitis", "Rokaitis", "Mantaitis"};
+    std::vector<std::string> moteriskos_pavardes = {"Jonaitiene", "Petraitiene", "Antanaitiene", "Kazaitiene", "Tomaitiene", "Dariukaite", "Mariukaite", "Rokaite", "Mantaite"};
+    srand(time(nullptr));
+    int zmoniu_kiekis = rand()%10 + 1;
+    for(int i=0; i<zmoniu_kiekis; i++) {
+        Studentas laikinas_studentas{};
+        if(rand()%2 == 1) {
+            laikinas_studentas.vardas = vyriski_vardai[rand()%vyriski_vardai.size()];
+            laikinas_studentas.pavarde = vyriskos_pavardes[rand()%vyriskos_pavardes.size()];
+        } else {
+            laikinas_studentas.vardas = moteriski_vardai[rand()%vyriski_vardai.size()];
+            laikinas_studentas.pavarde = moteriskos_pavardes[rand()%vyriskos_pavardes.size()];
+        }
+
+
+        int random_pazymiu_kiekis{rand() % 10 + 1};
+        for(int i=0; i<random_pazymiu_kiekis; i++) {
+            laikinas_studentas.pazymiai.push_back(rand()%10 + 1);
+        }
+        laikinas_studentas.egzamino_rezultatas = rand() % 10 + 1;
         studentai.push_back(laikinas_studentas);
     }
 }
@@ -124,7 +199,24 @@ void isvestis(std::vector<Studentas>& studentai) {
 
 int main() {
     std::vector<Studentas> studentai;
-    studentu_ivestis(studentai);
-    isvestis(studentai);
+    while(true){
+        int menu = meniu();
+        switch(menu) {
+            case 1:
+                studentu_ivestis(studentai);
+            break;
+            case 2:
+                studentu_ivestis_random_2(studentai);
+            break;
+            case 3:
+                studentu_ivestis_random_3(studentai);
+            break;
+            case 4:
+                return 0;
+            break;
+
+        }
+        isvestis(studentai);
+    }
 }
 
