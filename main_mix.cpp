@@ -30,26 +30,39 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
         int pazymys{0};
         while(true) {
             std::cin >> pazymys;
-            if(pazymys == -1) {
-                break;
-            }
-            if(pazymys >= 1 && pazymys <= 10) {
-                laikinas_studentas.pazymiu_kiekis++;
-                prideti_nauja_pazymi(laikinas_studentas , pazymys);
+            if(!std::cin.fail()) {
+                if(pazymys == -1) {
+                    break;
+                }
+                if(pazymys >= 1 && pazymys <= 10) {
+                    laikinas_studentas.pazymiu_kiekis++;
+                    prideti_nauja_pazymi(laikinas_studentas , pazymys);
+                } else {
+                    std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
+                }
             } else {
+                std::cin.clear(); // Clear the error state
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the invalid input
                 std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
             }
         }
         std::cout<<"Iveskite egzamino rezultata: ";
         laikinas_studentas.egzamino_rezultatas = 0;
-        while(laikinas_studentas.egzamino_rezultatas < 1 || laikinas_studentas.egzamino_rezultatas > 10) {
-            std::cin>>laikinas_studentas.egzamino_rezultatas;
-            if(laikinas_studentas.egzamino_rezultatas < 1 || laikinas_studentas.egzamino_rezultatas > 10) {
-                std::cout<<"Ivestas netinkamas egzamino rezultatas. Iveskite egzamino rezultata is naujo: ";
+            while(laikinas_studentas.egzamino_rezultatas < 1 || laikinas_studentas.egzamino_rezultatas > 10) {
+                laikinas_studentas.egzamino_rezultatas = 0;
+                std::cin>>laikinas_studentas.egzamino_rezultatas;
+                if(std::cin.fail()) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Ivestas netinkamas pazymys. Iveskite pazymi is naujo: ";
+                    continue;
+                }
+                if(laikinas_studentas.egzamino_rezultatas < 1 || laikinas_studentas.egzamino_rezultatas > 10) {
+                    std::cout<<"Ivestas netinkamas egzamino rezultatas. Iveskite egzamino rezultata is naujo: ";
+                }
             }
+            studentai.push_back(laikinas_studentas);
         }
-        studentai.push_back(laikinas_studentas);
-    }
 }
 
 float galutinis_pazymys_vidurkis(Studentas &studentas) {

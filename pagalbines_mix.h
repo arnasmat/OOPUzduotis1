@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 struct Studentas {
     std::string vardas{}, pavarde{};
