@@ -30,33 +30,23 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
     }
 }
 
-void studentu_atspausdinimas(std::vector<Studentas>& studentai) {
-    for(auto i: studentai) {
-        std::cout<<i.vardas<<" "<<i.pavarde<<std::endl;
-        for(int j=0; j<i.pazymiai.size(); j++) {
-            std::cout<<i.pazymiai[j]<<" ";
-        }
-        std::cout<<std::endl;
-        std::cout<<i.egzamino_rezultatas<<std::endl;
-    }
-}
-
-unsigned int galutinis_pazymys_vidurkis(Studentas &studentas) {
+float galutinis_pazymys_vidurkis(Studentas &studentas) {
     unsigned int pazymiu_suma{0};
     for(const auto i: studentas.pazymiai) {
         pazymiu_suma+=i;
     }
-    return static_cast<int>(round(pazymiu_suma / studentas.pazymiai.size() * 0.4 + studentas.egzamino_rezultatas * 0.6));
+    return pazymiu_suma / studentas.pazymiai.size() * 0.4 + studentas.egzamino_rezultatas * 0.6;
 }
 
-unsigned int galutinis_pazymys_mediana(Studentas &studentas) {
+float galutinis_pazymys_mediana(Studentas &studentas) {
     unsigned int mediana{0};
+    std::sort(studentas.pazymiai.begin(), studentas.pazymiai.end());
     if(studentas.pazymiai.size()%2==0) {
         mediana = round((studentas.pazymiai[studentas.pazymiai.size()/2.0] + studentas.pazymiai[studentas.pazymiai.size()/2.0-1])/2.0);
     } else {
         mediana = studentas.pazymiai[(studentas.pazymiai.size()/2.0)];
     }
-    return static_cast<int>(mediana*0.4 + studentas.egzamino_rezultatas*0.6);
+    return mediana*0.4 + studentas.egzamino_rezultatas*0.6;
 }
 
 void isvestis(std::vector<Studentas>& studentai) {
@@ -69,24 +59,37 @@ void isvestis(std::vector<Studentas>& studentai) {
         }
     }
 
-    std::cout<<"Vardas    Pavarde    ";
-    if(pasirinkimas=='v' || pasirinkimas=='a') {
-        std::cout<<"Galutinis (Vid.)  ";
+    int longest_name{0};
+    int longest_surname{0};
+    for(auto i: studentai) {
+        if(i.vardas.length() > longest_name) {
+            longest_name = i.vardas.length();
+        }
+        if(i.pavarde.length() > longest_surname) {
+            longest_surname = i.pavarde.length();
+        }
     }
-    if(pasirinkimas=='a') std::cout<<"  ";
+
+    std::cout<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde";
+    std::cout<<std::left<<std::setw(longest_name > 6 ? longest_name+2 : 8)<<"Vardas";
+    if(pasirinkimas=='v' || pasirinkimas=='a') {
+        std::cout<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
+    }
+    if(pasirinkimas=='a') std::cout<<"   ";
     if(pasirinkimas=='m' || pasirinkimas=='a') {
-        std::cout<<"Galutinis (Med.)";
+        std::cout<<std::setw(17)<<std::left<<"Galutinis (Med.)";
     }
     std::cout<<std::endl;
     std::cout<<"------------------------------------------------------------"<<std::endl;
     for(auto i: studentai) {
-        std::cout<<i.vardas<<" "<<i.pavarde<<" ";
+        std::cout<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)
+            <<i.pavarde<<std::left<<std::setw(longest_name > 6 ? longest_surname+2 : 8)<<i.vardas;
         if(pasirinkimas=='v' || pasirinkimas=='a') {
-            std::cout<<galutinis_pazymys_vidurkis(i);
+            std::cout<<std::setw(17)<<std::left<<std::fixed<<std::setprecision(2)<<galutinis_pazymys_vidurkis(i);
         }
-        if(pasirinkimas=='a') std::cout<<"/  ";
+        if(pasirinkimas=='a') std::cout<<"   ";
         if(pasirinkimas=='m' || pasirinkimas=='a') {
-            std::cout<<galutinis_pazymys_mediana(i);
+            std::cout<<std::setw(17)<<std::left<<std::fixed<<std::setprecision(2)<<galutinis_pazymys_mediana(i);
         }
         std::cout<<std::endl;
     }
@@ -96,6 +99,5 @@ void isvestis(std::vector<Studentas>& studentai) {
 int main() {
     std::vector<Studentas> studentai{};
     studentu_ivestis(studentai);
-    studentu_atspausdinimas(studentai);
     isvestis(studentai);
 }
