@@ -193,7 +193,7 @@ void isvestis(std::vector<Studentas>& studentai) {
     }
 
     std::cout<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde";
-    std::cout<<std::left<<std::setw(longest_name > 6 ? longest_surname+2 : 8)<<"Vardas";
+    std::cout<<std::left<<std::setw(longest_name > 6 ? longest_name+2 : 8)<<"Vardas";
     if(pasirinkimas=='v' || pasirinkimas=='a') {
         std::cout<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
     }
