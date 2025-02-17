@@ -7,6 +7,7 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
+#include <fstream>
 
 struct Studentas {
     std::string vardas{}, pavarde{};
