@@ -28,6 +28,36 @@ int meniu(const std::string &ivesties_failo_pavadinimas) {
     return meniu;
 }
 
+void isvesties_meniu(std::vector<Studentas>& studentai, std::string(isvesties_failo_pavadinimas)) {
+    std::cout<<"Kaip norite isvesti gautus rezultatus: "<<std::endl;
+    std::cout<<"1. I terminala"<<std::endl;
+    std::cout<<"2. I faila"<<std::endl;
+    int isvesties_pasirinkimas{0};
+    std::cin>>isvesties_pasirinkimas;
+    while(isvesties_pasirinkimas<1 || isvesties_pasirinkimas>2) {
+        std::cin>>isvesties_pasirinkimas;
+        if(std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout<<"Iveskite skaiciu nuo 1 iki 2"<<std::endl;
+            continue;
+        }
+        if(isvesties_pasirinkimas<1 || isvesties_pasirinkimas>2)
+            std::cout<<"Iveskite skaiciu nuo 1 iki 2"<<std::endl;
+    }
+    if(isvesties_pasirinkimas==1) {
+        isvestis(studentai, std::cout);
+    } else {
+        std::ofstream file(isvesties_failo_pavadinimas);
+        if (file.is_open()) {
+            isvestis(studentai, file);
+            file.close();
+        } else {
+            std::cerr << "Nepavyko atidaryti isvesties failo";
+        }
+    }
+}
+
 void studentu_ivestis(std::vector<Studentas>& studentai) {
     while(true) {
         std::cout<<studentai.size();
@@ -205,7 +235,7 @@ float galutinis_pazymys_mediana(Studentas &studentas) {
     return mediana*0.4 + studentas.egzamino_rezultatas*0.6;
 }
 
-void isvestis(std::vector<Studentas>& studentai) {
+void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
     int rodyti_pasirinkimas{0};
     std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<std::endl;
     std::cout<<"1. Vidurki"<<std::endl;
@@ -298,45 +328,44 @@ void isvestis(std::vector<Studentas>& studentai) {
     if(rodyti_pasirinkimas==1 || rodyti_pasirinkimas==3) {
         output<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
     }
-    if(rodyti_pasirinkimas==3) std::cout<<"   ";
     if(rodyti_pasirinkimas==2 || rodyti_pasirinkimas==3) {
         output<<std::setw(17)<<std::left<<"Galutinis (Med.)";
         output<<std::endl;
         output<<"------------------------------------------------------------"<<std::endl;
     }
 
-    output << std::fixed << std::setprecision(2);
+    output << std::left<<std::fixed << std::setprecision(2);
 
     if (rodyti_pasirinkimas == 1) {
         for (auto& i : studentai) {
-            output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
-                   << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
+            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+                   << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_vidurkis << "\n";
         }
     } else if (rodyti_pasirinkimas == 2) {
         for (auto& i : studentai) {
-            output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
-                   << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
+            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+                   << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     } else if (rodyti_pasirinkimas == 3) {
         for (auto& i : studentai) {
-            output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
-                   << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
+            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+                   << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_vidurkis << "   "
                    << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     }
 
-    std::cout << output.str();
+    output_method << output.str();
 }
 
 int main() {
-    const std::string ivesties_failo_pavadinimas{"studentai100000.txt"};
-    // const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
+    const std::string ivesties_failo_pavadinimas{"studentai10000.txt"};
+    const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
     std::vector<Studentas> studentai;
     while(true){
-        int menu = meniu(ivesties_failo_pavadinimas);
+        int menu{meniu(ivesties_failo_pavadinimas)};
         switch(menu) {
             case 1:
                 studentu_ivestis(studentai);
@@ -353,7 +382,7 @@ int main() {
             case 5:
                 return 0;
         }
-        isvestis(studentai);
+    isvesties_meniu(studentai, isvesties_failo_pavadinimas);
     }
 }
 

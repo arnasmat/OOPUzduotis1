@@ -1,0 +1,11 @@
+Vardas              Pavarde              ND1 ND2 ND3 ND4 ND5 Egzaminas
+Petras              Petraitis              10  9   8   7   6   5
+Jonas               Jonaitis               9   8   7   6   5   4
+Antanas             Antanaitis             8   7   6   5   4   3
+Pranas              Pranaitis              7   6   5   4   3   2
+Kazys               Kazaitis               6   5   4   3   2   1
+Monika              Monikaite              5   4   3   2   1   10
+Rita                Rytaite                4   3   2   1   10  9
+Giedre              Giedraite              3   2   1   10  9   8
+Gabija              Gabijaite              2   1   10  9   8   7
+Nika                Nikaite                1   10  9   8   7   10
