@@ -13,7 +13,10 @@ struct Studentas {
     std::string vardas{}, pavarde{};
     std::vector<unsigned int> pazymiai{};
     unsigned int egzamino_rezultatas{};
+    float galutinis_vidurkis{};
+    float galutinis_mediana{};
 };
 
+float galutinis_pazymys_vidurkis(Studentas &studentas);
 
 #endif // PAGALBINES_VEC_H

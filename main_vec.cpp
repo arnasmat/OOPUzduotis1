@@ -4,7 +4,7 @@
 
 #include "pagalbines_vec.h"
 
-int meniu(const std::string &ivesties_failo_pavadinimas, const std::string& isvesties_failo_pavadinimas) {
+int meniu(const std::string &ivesties_failo_pavadinimas) {
     int meniu{0};
     std::cout<<"------------------------------------------------------------"<<std::endl;
     std::cout<<"Pasirinkite programos eiga: "<<std::endl;
@@ -146,6 +146,10 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
 
 void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas) {
     std::ifstream input(failo_pavadinimas);
+    if(!input) {
+        std::cerr<<"Failas nerastas.";
+        return;
+    }
     std::stringstream buffer{};
     buffer << input.rdbuf();
     input.close();
@@ -202,13 +206,77 @@ float galutinis_pazymys_mediana(Studentas &studentas) {
 }
 
 void isvestis(std::vector<Studentas>& studentai) {
-    char pasirinkimas{};
-    std::cout<<"Pasirinkite ka norite matyti: v - vidurkis, m - mediana, a - abu: ";
-    while(pasirinkimas != 'v' && pasirinkimas != 'm' && pasirinkimas != 'a') {
-        std::cin>>pasirinkimas;
-        if(pasirinkimas != 'v' && pasirinkimas !=  'm' && pasirinkimas != 'a') {
-            std::cout<<"Neteisingas pasirinkimas. Prasome ivesti v, m arba a.";
+    int rodyti_pasirinkimas{0};
+    std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<std::endl;
+    std::cout<<"1. Vidurki"<<std::endl;
+    std::cout<<"2. Mediana"<<std::endl;
+    std::cout<<"3. Abu (ir vidurki, ir mediana)"<<std::endl;
+
+    while(rodyti_pasirinkimas<1 || rodyti_pasirinkimas>3) {
+        std::cin>>rodyti_pasirinkimas;
+        if(std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout<<"Iveskite skaiciu nuo 1 iki 3"<<std::endl;
+            continue;
         }
+        if(rodyti_pasirinkimas<1 || rodyti_pasirinkimas>3)
+            std::cout<<"Iveskite skaiciu nuo 1 iki 3"<<std::endl;
+    }
+    std::cout<<"------------------------------------------------------------"<<std::endl;
+
+    for(auto &i: studentai) {
+            i.galutinis_vidurkis = galutinis_pazymys_vidurkis(i);
+            i.galutinis_mediana = galutinis_pazymys_mediana(i);
+    }
+
+    int rusiavimo_pasirinkimas{0};
+    std::cout<<"Pasirinkite kaip norite rusiuoti: "<<std::endl;
+    std::cout<<"1. Rusiuoti pagal varda"<<std::endl;
+    std::cout<<"2. Rusiuoti pagal pavarde"<<std::endl;
+    std::cout<<"3. Rusiuoti pagal galutini pazymi pagal vidurki mazejanciai"<<std::endl;
+    std::cout<<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai"<<std::endl;
+    std::cout<<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai"<<std::endl;
+    std::cout<<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai"<<std::endl;
+    std::cin>>rusiavimo_pasirinkimas;
+
+    while(rusiavimo_pasirinkimas<1 || rusiavimo_pasirinkimas>6) {
+        std::cin>>rusiavimo_pasirinkimas;
+        if(std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout<<"Iveskite skaiciu nuo 1 iki 6"<<std::endl;
+            continue;
+        }
+        if(rusiavimo_pasirinkimas<1 || rusiavimo_pasirinkimas>6)
+            std::cout<<"Iveskite skaiciu nuo 1 iki 6"<<std::endl;
+    }
+
+    switch(rusiavimo_pasirinkimas) {
+        case 1:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+                return a.vardas < b.vardas;
+            }); break;
+        case 2:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+                return a.pavarde < b.pavarde;
+            }); break;
+        case 3:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+                return a.galutinis_vidurkis > b.galutinis_vidurkis;
+            }); break;
+        case 4:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+                return a.galutinis_vidurkis < b.galutinis_vidurkis;
+            }); break;
+        case 5:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+            return a.galutinis_mediana > b.galutinis_mediana;
+            }); break;
+        case 6:
+            std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
+            return a.galutinis_mediana < b.galutinis_mediana;
+            }); break;
     }
 
     int longest_name{0};
@@ -222,42 +290,41 @@ void isvestis(std::vector<Studentas>& studentai) {
         }
     }
 
+    //konvertuoti i viena eilute
     std::stringstream output;
 
     output<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde"
     <<std::left<<std::setw(longest_name > 6 ? longest_name+2 : 8)<<"Vardas";
-    if(pasirinkimas=='v' || pasirinkimas=='a') {
+    if(rodyti_pasirinkimas==1 || rodyti_pasirinkimas==3) {
         output<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
     }
-    if(pasirinkimas=='a') std::cout<<"   ";
-    if(pasirinkimas=='m' || pasirinkimas=='a') {
+    if(rodyti_pasirinkimas==3) std::cout<<"   ";
+    if(rodyti_pasirinkimas==2 || rodyti_pasirinkimas==3) {
         output<<std::setw(17)<<std::left<<"Galutinis (Med.)";
         output<<std::endl;
         output<<"------------------------------------------------------------"<<std::endl;
     }
 
-    //konvertuoti i viena eilute
-
     output << std::fixed << std::setprecision(2);
 
-    if (pasirinkimas == 'v') {
+    if (rodyti_pasirinkimas == 1) {
         for (auto& i : studentai) {
             output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
-                   << std::setw(17) << std::left << galutinis_pazymys_vidurkis(i) << "\n";
+                   << std::setw(17) << std::left << i.galutinis_vidurkis << "\n";
         }
-    } else if (pasirinkimas == 'm') {
+    } else if (rodyti_pasirinkimas == 2) {
         for (auto& i : studentai) {
             output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
-                   << std::setw(17) << std::left << galutinis_pazymys_mediana(i) << "\n";
+                   << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
-    } else if (pasirinkimas == 'a') {
+    } else if (rodyti_pasirinkimas == 3) {
         for (auto& i : studentai) {
             output << std::left << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::left << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
-                   << std::setw(17) << std::left << galutinis_pazymys_vidurkis(i) << "   "
-                   << std::setw(17) << std::left << galutinis_pazymys_mediana(i) << "\n";
+                   << std::setw(17) << std::left << i.galutinis_vidurkis << "   "
+                   << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     }
 
@@ -265,11 +332,11 @@ void isvestis(std::vector<Studentas>& studentai) {
 }
 
 int main() {
-    const std::string ivesties_failo_pavadinimas{"studentai10000.txt"};
-    const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
+    const std::string ivesties_failo_pavadinimas{"studentai100000.txt"};
+    // const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
     std::vector<Studentas> studentai;
     while(true){
-        int menu = meniu(ivesties_failo_pavadinimas, isvesties_failo_pavadinimas);
+        int menu = meniu(ivesties_failo_pavadinimas);
         switch(menu) {
             case 1:
                 studentu_ivestis(studentai);
