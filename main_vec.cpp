@@ -2,6 +2,8 @@
 // Created by User on 2025-02-10.
 //
 
+#include <chrono>
+
 #include "pagalbines_vec.h"
 
 int meniu(const std::string &ivesties_failo_pavadinimas) {
@@ -12,18 +14,19 @@ int meniu(const std::string &ivesties_failo_pavadinimas) {
     std::cout<<"2. Generuoti pazymius, bet studentus ivesti ranka"<<std::endl;
     std::cout<<"3. Generuoti pazymius ir studentus"<<std::endl;
     std::cout<<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas<<std::endl;
-    std::cout<<"5. Baigti programos darba"<<std::endl;
+    std::cout<<"5. Nuskaitymo greicio testavimas"<<std::endl;
+    std::cout<<"6. Baigti programos darba"<<std::endl;
     std::cout<<"------------------------------------------------------------"<<std::endl;
-    while(meniu<1 || meniu>5) {
+    while(meniu<1 || meniu>6) {
         std::cin>>meniu;
         if(std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo 1 iki 5"<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo 1 iki 6"<<std::endl;
             continue;
         }
-        if(meniu<1 || meniu>5)
-            std::cout<<"Iveskite skaiciu nuo 1 iki 5"<<std::endl;
+        if(meniu<1 || meniu>6)
+            std::cout<<"Iveskite skaiciu nuo 1 iki 6"<<std::endl;
     }
     return meniu;
 }
@@ -33,7 +36,6 @@ void isvesties_meniu(std::vector<Studentas>& studentai, std::string(isvesties_fa
     std::cout<<"1. I terminala"<<std::endl;
     std::cout<<"2. I faila"<<std::endl;
     int isvesties_pasirinkimas{0};
-    std::cin>>isvesties_pasirinkimas;
     while(isvesties_pasirinkimas<1 || isvesties_pasirinkimas>2) {
         std::cin>>isvesties_pasirinkimas;
         if(std::cin.fail()) {
@@ -174,10 +176,11 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
     }
 }
 
-void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas) {
+void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas, bool& praejo) {
     std::ifstream input(failo_pavadinimas);
     if(!input) {
         std::cerr<<"Failas nerastas.";
+        praejo = true;
         return;
     }
     std::stringstream buffer{};
@@ -260,7 +263,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
             i.galutinis_mediana = galutinis_pazymys_mediana(i);
     }
 
-    int rusiavimo_pasirinkimas{0};
+
     std::cout<<"Pasirinkite kaip norite rusiuoti: "<<std::endl;
     std::cout<<"1. Rusiuoti pagal varda"<<std::endl;
     std::cout<<"2. Rusiuoti pagal pavarde"<<std::endl;
@@ -268,7 +271,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
     std::cout<<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai"<<std::endl;
     std::cout<<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai"<<std::endl;
     std::cout<<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai"<<std::endl;
-    std::cin>>rusiavimo_pasirinkimas;
+    int rusiavimo_pasirinkimas{0};
 
     while(rusiavimo_pasirinkimas<1 || rusiavimo_pasirinkimas>6) {
         std::cin>>rusiavimo_pasirinkimas;
@@ -363,6 +366,8 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
 int main() {
     const std::string ivesties_failo_pavadinimas{"studentai10000.txt"};
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
+    bool praejo{true};
+
     std::vector<Studentas> studentai;
     while(true){
         int menu{meniu(ivesties_failo_pavadinimas)};
@@ -377,12 +382,24 @@ int main() {
                 studentu_ivestis_random_3(studentai);
             break;
             case 4:
-                studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas);
+                studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
             break;
             case 5:
+                std::chrono::duration<double> nuskaitymo_laiku_suma;
+                for(int i=0; i<10; i++) {
+                    auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+                    studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
+                    std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+                    nuskaitymo_laiku_suma+=sugaistas_laikas;
+                    std::cout<<sugaistas_laikas.count()<<std::endl;
+                }
+            std::cout<<"Nuskaitymo is failo vidutinis laikas: "<<nuskaitymo_laiku_suma.count()/10<<std::endl;
+            //cia nededu break'o, nes noriu, kad po jo vis tiek returnintu 0
+            case 6:
                 return 0;
         }
-    isvesties_meniu(studentai, isvesties_failo_pavadinimas);
+        if(praejo)
+            isvesties_meniu(studentai, isvesties_failo_pavadinimas);
     }
 }
 

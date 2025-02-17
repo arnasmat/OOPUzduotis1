@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <random>
 #include <fstream>
+#include <chrono>
 
 struct Studentas {
     std::string vardas{}, pavarde{};
