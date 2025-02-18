@@ -216,7 +216,6 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string fa
     }
 }
 
-
 float galutinis_pazymys_vidurkis(Studentas &studentas) {
     unsigned int pazymiu_suma{0};
     if(studentas.pazymiai.size()==0) return 0;;
@@ -366,11 +365,12 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
 int main() {
     const std::string ivesties_failo_pavadinimas{"studentai10000.txt"};
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
-    bool praejo{true};
+
 
     std::vector<Studentas> studentai;
     while(true){
         int menu{meniu(ivesties_failo_pavadinimas)};
+        bool praejo{true};
         switch(menu) {
             case 1:
                 studentu_ivestis(studentai);
@@ -384,17 +384,45 @@ int main() {
             case 4:
                 studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
             break;
-            case 5:
-                std::chrono::duration<double> nuskaitymo_laiku_suma;
+            case 5: {
+                std::chrono::duration<double> nuskaitymo_laiku_suma{0};
+                std::vector<Studentas> test_studentai;
+                int failo_pasirinkimas{0};
+                std::string testavimo_failo_pavadinimas{};
+                std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: "<<std::endl;
+                std::cout<<"1. 10000 studentu"<<std::endl;
+                std::cout<<"2. 100000 studentu"<<std::endl;
+                std::cout<<"3. 1000000 studentu"<<std::endl;
+                while(failo_pasirinkimas<1 || failo_pasirinkimas>3) {
+                    std::cin>>failo_pasirinkimas;
+                    if(std::cin.fail()) {
+                        std::cin.clear();
+                        std::cin.ignore();
+                        std::cout<<"Iveskite skaiciu nuo 1 iki 3"<<std::endl;
+                        continue;
+                    }
+                    if(failo_pasirinkimas<1 || failo_pasirinkimas>3)
+                        std::cout<<"Iveskite skaiciu nuo 1 iki 3"<<std::endl;
+                }
+
+                switch(failo_pasirinkimas) {
+                    case 1: testavimo_failo_pavadinimas = "studentai10000.txt"; break;
+                    case 2: testavimo_failo_pavadinimas = "studentai100000.txt"; break;
+                    case 3: testavimo_failo_pavadinimas = "studentai1000000.txt"; break;
+                }
+
                 for(int i=0; i<10; i++) {
                     auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-                    studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
+                    studentu_ivestis_is_failo(test_studentai, testavimo_failo_pavadinimas, praejo);
                     std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
                     nuskaitymo_laiku_suma+=sugaistas_laikas;
                     std::cout<<sugaistas_laikas.count()<<std::endl;
+                    test_studentai.clear();
                 }
-            std::cout<<"Nuskaitymo is failo vidutinis laikas: "<<nuskaitymo_laiku_suma.count()/10<<std::endl;
-            //cia nededu break'o, nes noriu, kad po jo vis tiek returnintu 0
+                std::cout<<"Nuskaitymo is failo vidutinis laikas: "<<nuskaitymo_laiku_suma.count()/10<<std::endl;
+                praejo=false;
+                break;
+            }
             case 6:
                 return 0;
         }
