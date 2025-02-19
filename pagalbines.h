@@ -1,5 +1,5 @@
-#ifndef PAGALBINES_VEC_H
-#define PAGALBINES_VEC_H
+#ifndef PAGALBINES_H
+#define PAGALBINES_H
 
 #include <iostream>
 #include <iomanip>
@@ -21,4 +21,4 @@ struct Studentas {
 float galutinis_pazymys_vidurkis(Studentas &studentas);
 void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method);
 
-#endif // PAGALBINES_VEC_H
+#endif // PAGALBINES_H
