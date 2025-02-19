@@ -4,7 +4,8 @@
 
 #include "../include/ivesties_pagalbines.h"
 
-//Globalus rd ir mt, kad ju seedinimas butu tik viena karta inicializuojant programa.
+//Globalus rd ir mt, kad ju seedinimas butu tik viena karta inicializuojant programa,
+//extern apibreztas pagalbines.h, bet normalus apibrezimas cia.
 std::random_device rd;
 std::mt19937 mt(rd());
 
@@ -17,7 +18,7 @@ int ivesties_patikrinimas(const int nuo, const int iki) {
             if(std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore();
-                std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
+                std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
                 continue;
             }
             if(input<nuo || input>iki)

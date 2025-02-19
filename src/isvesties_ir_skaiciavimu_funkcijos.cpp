@@ -11,19 +11,19 @@ float galutinis_pazymys_vidurkis(Studentas &studentas) {
     for(const auto &i: studentas.pazymiai) {
         pazymiu_suma+=i;
     }
-    return pazymiu_suma / studentas.pazymiai.size() * 0.4 + studentas.egzamino_rezultatas * 0.6;
+    return static_cast<float>(static_cast<float>(pazymiu_suma) / static_cast<float>(studentas.pazymiai.size()) * 0.4 + studentas.egzamino_rezultatas * 0.6);
 }
 
 float galutinis_pazymys_mediana(Studentas &studentas) {
     float mediana{0};
-    if(studentas.pazymiai.empty()) return 0;
     std::sort(studentas.pazymiai.begin(), studentas.pazymiai.end());
-    if(studentas.pazymiai.size()%2==0) {
-        mediana = (studentas.pazymiai[studentas.pazymiai.size()/2.0] + studentas.pazymiai[studentas.pazymiai.size()/2.0-1])/2.0;
-    } else {
-        mediana = studentas.pazymiai[(studentas.pazymiai.size()/2.0)];
-    }
-    return mediana*0.4 + studentas.egzamino_rezultatas*0.6;
+if(studentas.pazymiai.size() % 2 == 0) {
+    mediana = static_cast<float>(studentas.pazymiai[studentas.pazymiai.size() / 2]
+        + studentas.pazymiai[studentas.pazymiai.size() / 2 - 1]) / 2.0f;
+} else {
+    mediana = static_cast<float>(studentas.pazymiai[studentas.pazymiai.size() / 2]);
+}
+    return mediana * 0.4f + static_cast<float>(studentas.egzamino_rezultatas)*0.6f;
 }
 
 void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas) {
@@ -65,6 +65,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
             <<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai\n"
             <<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai\n"
             <<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai\n";
+
     int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
 
     switch(rusiavimo_pasirinkimas) {
@@ -92,16 +93,18 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
             std::sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b) {
             return a.galutinis_mediana < b.galutinis_mediana;
             }); break;
+        default:
+            break;
     }
 
     int longest_name{0};
     int longest_surname{0};
     for(auto &i: studentai) {
         if(i.vardas.length() > longest_name) {
-            longest_name = i.vardas.length();
+            longest_name = static_cast<int>(i.vardas.length());
         }
         if(i.pavarde.length() > longest_surname) {
-            longest_surname = i.pavarde.length();
+            longest_surname = static_cast<int>(i.pavarde.length());
         }
     }
 

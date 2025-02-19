@@ -10,7 +10,9 @@ std::vector<fs::path> gauti_failus_ivesties_direktorijoje(){
     try {
         std::vector<fs::path> failai{};
         for (const auto & entry : fs::directory_iterator("../data/input"))
-            failai.push_back(entry.path());
+            if(entry.path().extension() == ".txt") {
+                failai.push_back(entry.path());
+            }
         return failai;
     } catch(std::exception& e) {
     std::cerr<<"Ivyko klaida nuskaitant testinius failus: "<<e.what()<<"\n";
@@ -22,7 +24,9 @@ std::vector<fs::path> gauti_failus_ivesties_testu_direktorijoje(){
     try {
         std::vector<fs::path> failai{};
         for (const auto & entry : fs::directory_iterator("../data/test_inputs"))
-            failai.push_back(entry.path());
+            if(entry.path().extension() == ".txt") {
+                failai.push_back(entry.path());
+            }
         return failai;
     } catch(std::exception& e) {
         std::cerr<<"Ivyko klaida nuskaitant testinius failus: "<<e.what()<<"\n";
