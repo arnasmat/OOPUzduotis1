@@ -9,15 +9,13 @@
 
 
 int main() {
-    const std::string ivesties_failo_pavadinimas{"studentai1000000.txt"};
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
-
-    isvardinti_failus_ivesties_direktorijoje();
+    fs::path ivesties_failas{"../data/input/kursiokai.txt"};
 
     std::vector<Studentas> studentai;
     while(true){
 
-        int menu{meniu(ivesties_failo_pavadinimas)};
+        int menu{meniu(ivesties_failas)};
         bool praejo{true};
         switch(menu) {
             case 1:
@@ -30,9 +28,13 @@ int main() {
                 studentu_ivestis_random_3(studentai);
             break;
             case 4:
-                studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
+                studentu_ivestis_is_failo(studentai, ivesties_failas, praejo);
             break;
-            case 5: {
+            case 5:
+                ivesties_failas = pasirinkti_faila_is_visu();
+                praejo = false;
+            break;
+            case 6: {
                 double laikas{ivesties_testavimas(praejo)};
                 std::cout<<"Vidutinis failo skaitymo laikas: "<<laikas<<"\n";
                 praejo=false;

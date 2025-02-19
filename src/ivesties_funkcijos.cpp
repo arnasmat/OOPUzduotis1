@@ -4,18 +4,20 @@
 
 #include "../include/ivesties_funkcijos.h"
 #include "../include/ivesties_pagalbines.h"
+#include "../include/failu_pasirinkimo_funkcijos.h"
 
-int meniu(const std::string &ivesties_failo_pavadinimas) {
+int meniu(const fs::path &ivesties_failo_pavadinimas) {
     std::cout<<"------------------------------------------------------------\n"
             <<"Pasirinkite programos eiga: \n"
             <<"1. Studentus ir pazymius ivesti ranka\n"
             <<"2. Generuoti pazymius, bet studentus ivesti ranka\n"
             <<"3. Generuoti pazymius ir studentus\n"
             <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas<<"\n"
-            <<"5. Nuskaitymo greicio testavimas\n"
-            <<"6. Baigti programos darba\n"
+            <<"5. Pasirinkti ivesties faila\n"
+            <<"6. Nuskaitymo greicio testavimas\n"
+            <<"7. Baigti programos darba\n"
             <<"------------------------------------------------------------\n";
-    int meniu{ivesties_patikrinimas(1,6)};
+    int meniu{ivesties_patikrinimas(1,7)};
     return meniu;
 }
 
@@ -98,8 +100,8 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
     }
 }
 
-void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const std::string& failo_pavadinimas, bool& praejo) {
-    std::ifstream ivesties_failas(failo_pavadinimas);
+void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const fs::path& ivesties_failo_pavadinimas, bool& praejo) {
+    std::ifstream ivesties_failas(ivesties_failo_pavadinimas);
     if(!ivesties_failas) {
         std::cerr<<"Failas nerastas.\n";
         praejo = false;
@@ -134,27 +136,16 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const std::str
 }
 
 double ivesties_testavimas(bool& praejo) {
-    std::string testavimo_failo_pavadinimas{};
-    std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: \n";
-    std::cout<<"1. 10000 studentu\n";
-    std::cout<<"2. 100000 studentu\n";
-    std::cout<<"3. 1000000 studentu\n";
-    int failo_pasirinkimas{ivesties_patikrinimas(1, 3)};
+    fs::path testavimo_failas{pasirinkti_faila_is_testiniu()};
     std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100): \n";
     int testu_kiekis{ivesties_patikrinimas(1,100)};
-
-    switch(failo_pasirinkimas) {
-        case 1: testavimo_failo_pavadinimas = "studentai10000.txt"; break;
-        case 2: testavimo_failo_pavadinimas = "studentai100000.txt"; break;
-        case 3: testavimo_failo_pavadinimas = "studentai1000000.txt"; break;
-    }
 
     std::chrono::duration<double> nuskaitymo_laiku_suma{0};
     std::vector<Studentas> test_studentai;
 
     for(int i=0; i<testu_kiekis; i++) {
         auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-        studentu_ivestis_is_failo(test_studentai, testavimo_failo_pavadinimas, praejo);
+        studentu_ivestis_is_failo(test_studentai, testavimo_failas, praejo);
         std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
         nuskaitymo_laiku_suma+=sugaistas_laikas;
         std::cout<<"Failo nuskaitymas uztruko: "<<sugaistas_laikas.count()<<"\n";

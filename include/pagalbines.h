@@ -9,6 +9,8 @@
 #include <random>
 #include <fstream>
 #include <chrono>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 struct Studentas {
     std::string vardas{}, pavarde{};
