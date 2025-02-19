@@ -7,7 +7,6 @@
 #include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
 #include "../include/failu_pasirinkimo_funkcijos.h"
 
-
 int main() {
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
     fs::path ivesties_failas{"../data/input/kursiokai.txt"};

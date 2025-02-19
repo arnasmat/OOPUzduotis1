@@ -45,7 +45,6 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
 }
 
 void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas) {
-
     std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<"\n"
             <<"1. Vidurki\n"
             <<"2. Mediana\n"
@@ -55,8 +54,8 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
     std::cout<<"------------------------------------------------------------\n";
 
     for(auto &i: studentai) {
-            i.galutinis_vidurkis = galutinis_pazymys_vidurkis(i);
-            i.galutinis_mediana = galutinis_pazymys_mediana(i);
+        i.galutinis_vidurkis = galutinis_pazymys_vidurkis(i);
+        i.galutinis_mediana = galutinis_pazymys_mediana(i);
     }
 
     std::cout<<"Pasirinkite kaip norite rusiuoti: \n"
@@ -67,7 +66,6 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
             <<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai\n"
             <<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai\n";
     int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
-
 
     switch(rusiavimo_pasirinkimas) {
         case 1:
@@ -143,6 +141,9 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
                    << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     }
-
-    isvesties_metodas << isvestis.str();
+    try {
+        isvesties_metodas << isvestis.str();
+    } catch(std::exception& e) {
+        std::cerr<<"Ivyko klaida isvedant duomenis: "<<e.what()<<"\n";
+    }
 }

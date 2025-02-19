@@ -108,9 +108,8 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const fs::path
     std::stringstream buffer{};
     try {
         if(!ivesties_failas || !ivesties_failas.is_open()) {
-            std::cerr<<"Failas nerastas.\n";
             praejo = false;
-            return;
+            throw std::runtime_error("Failas nerastas.");
         }
     buffer << ivesties_failas.rdbuf();
     ivesties_failas.close();

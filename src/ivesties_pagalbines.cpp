@@ -79,11 +79,15 @@ void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_
 }
 
 void random_pazymiu_generavimas(Studentas& laikinas_studentas) {
-    std::uniform_int_distribution<int> random(1, 10);
-    int random_pazymiu_kiekis = random(mt);
-    for(int i=0; i<random_pazymiu_kiekis; i++) {
-        laikinas_studentas.pazymiai.push_back(random(mt));
+    try {
+        std::uniform_int_distribution<int> random(1, 10);
+        int random_pazymiu_kiekis = random(mt);
+        for(int i=0; i<random_pazymiu_kiekis; i++) {
+            laikinas_studentas.pazymiai.push_back(random(mt));
 
+        }
+        laikinas_studentas.egzamino_rezultatas = random(mt);
+    } catch(std::exception& e) {
+        std::cerr<<"Ivyko klaida generuojant pazymius: "<<e.what()<<"\n";
     }
-    laikinas_studentas.egzamino_rezultatas = random(mt);
 }
