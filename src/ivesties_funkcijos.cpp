@@ -67,49 +67,57 @@ void studentu_ivestis_random_2(std::vector<Studentas>& studentai) {
 }
 
 void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
+    try {
+        //Random vardu generavimas
+        std::vector<std::string> vyriski_vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Tomas", "Darius", "Marius", "Rokas", "Mantas", "Mantas"};
+        std::vector<std::string> moteriski_vardai = {"Ona", "Petra", "Antanina", "Kazyte", "Toma", "Darija", "Marija", "Rokas", "Mante", "Mante"};
 
-    //Random vardu generavimas
-    std::vector<std::string> vyriski_vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Tomas", "Darius", "Marius", "Rokas", "Mantas", "Mantas"};
-    std::vector<std::string> moteriski_vardai = {"Ona", "Petra", "Antanina", "Kazyte", "Toma", "Darija", "Marija", "Rokas", "Mante", "Mante"};
+        std::vector<std::string> vyriskos_pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Tomaitis", "Dariukaitis", "Mariukaitis", "Rokaitis", "Mantaitis"};
+        std::vector<std::string> moteriskos_pavardes = {"Jonaitiene", "Petraitiene", "Antanaitiene", "Kazaitiene", "Tomaitiene", "Dariukaite", "Mariukaite", "Rokaite", "Mantaite"};
 
-    std::vector<std::string> vyriskos_pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Tomaitis", "Dariukaitis", "Mariukaitis", "Rokaitis", "Mantaitis"};
-    std::vector<std::string> moteriskos_pavardes = {"Jonaitiene", "Petraitiene", "Antanaitiene", "Kazaitiene", "Tomaitiene", "Dariukaite", "Mariukaite", "Rokaite", "Mantaite"};
+        std::uniform_int_distribution<int> random(1, 10);
+        //Inicializuoju random reiskme kiekvienam, jeigu keisis ju dydziai ateityje.
+        //Pasiklausti, ar teisingai esu padares, nes kazkaip labai daznai generuoja identiska varda kelis kartus is eiles.
+        std::uniform_int_distribution<int> random_vyriskas_vardas(0, static_cast<int>(vyriski_vardai.size())-1);
+        std::uniform_int_distribution<int> random_moteriskas_vardas(0, static_cast<int>(moteriski_vardai.size())-1);
+        std::uniform_int_distribution<int> random_vyriska_pavarde(0, static_cast<int>(vyriskos_pavardes.size())-1);
+        std::uniform_int_distribution<int> random_moteriska_pavarde(0, static_cast<int>(moteriskos_pavardes.size())-1);
 
-    std::uniform_int_distribution<int> random(1, 10);
-    //Inicializuoju random reiskme kiekvienam, jeigu keisis ju dydziai ateityje.
-    //Pasiklausti, ar teisingai esu padares, nes kazkaip labai daznai generuoja identiska varda kelis kartus is eiles.
-    std::uniform_int_distribution<int> random_vyriskas_vardas(0, static_cast<int>(vyriski_vardai.size())-1);
-    std::uniform_int_distribution<int> random_moteriskas_vardas(0, static_cast<int>(moteriski_vardai.size())-1);
-    std::uniform_int_distribution<int> random_vyriska_pavarde(0, static_cast<int>(vyriskos_pavardes.size())-1);
-    std::uniform_int_distribution<int> random_moteriska_pavarde(0, static_cast<int>(moteriskos_pavardes.size())-1);
+        int zmoniu_kiekis = random(mt);
+        for(int i=0; i<zmoniu_kiekis; i++) {
+            Studentas laikinas_studentas{};
+            if(random(mt)%2 == 1) {
+                laikinas_studentas.vardas = vyriski_vardai[random_vyriskas_vardas(mt)];
+                laikinas_studentas.pavarde = vyriskos_pavardes[random_vyriska_pavarde(mt)];
+            } else {
+                laikinas_studentas.vardas = moteriski_vardai[random_moteriskas_vardas(mt)];
+                laikinas_studentas.pavarde = moteriskos_pavardes[random_moteriska_pavarde(mt)];
+            }
 
-    int zmoniu_kiekis = random(mt);
-    for(int i=0; i<zmoniu_kiekis; i++) {
-        Studentas laikinas_studentas{};
-        if(random(mt)%2 == 1) {
-            laikinas_studentas.vardas = vyriski_vardai[random_vyriskas_vardas(mt)];
-            laikinas_studentas.pavarde = vyriskos_pavardes[random_vyriska_pavarde(mt)];
-        } else {
-            laikinas_studentas.vardas = moteriski_vardai[random_moteriskas_vardas(mt)];
-            laikinas_studentas.pavarde = moteriskos_pavardes[random_moteriska_pavarde(mt)];
+            random_pazymiu_generavimas(laikinas_studentas);
+
+            studentai.push_back(laikinas_studentas);
         }
-
-        random_pazymiu_generavimas(laikinas_studentas);
-
-        studentai.push_back(laikinas_studentas);
+    } catch(std::exception& e){
+        std::cerr<<"Ivyko klaida generuojant studentus: "<<e.what()<<"\n";
     }
 }
 
 void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const fs::path& ivesties_failo_pavadinimas, bool& praejo) {
     std::ifstream ivesties_failas(ivesties_failo_pavadinimas);
-    if(!ivesties_failas) {
-        std::cerr<<"Failas nerastas.\n";
-        praejo = false;
-        return;
-    }
     std::stringstream buffer{};
+    try {
+        if(!ivesties_failas || !ivesties_failas.is_open()) {
+            std::cerr<<"Failas nerastas.\n";
+            praejo = false;
+            return;
+        }
     buffer << ivesties_failas.rdbuf();
     ivesties_failas.close();
+    } catch(const std::exception& e){
+        std::cerr<<"Klaida su failu: "<<e.what()<<"\n";
+        return;
+    }
 
     std::vector<std::string> split_linijos{};
     std::string linija{};
@@ -141,8 +149,8 @@ double ivesties_testavimas(bool& praejo) {
     int testu_kiekis{ivesties_patikrinimas(1,100)};
 
     std::chrono::duration<double> nuskaitymo_laiku_suma{0};
+try {
     std::vector<Studentas> test_studentai;
-
     for(int i=0; i<testu_kiekis; i++) {
         auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
         studentu_ivestis_is_failo(test_studentai, testavimo_failas, praejo);
@@ -152,4 +160,8 @@ double ivesties_testavimas(bool& praejo) {
         test_studentai.clear();
     }
     return nuskaitymo_laiku_suma.count()/testu_kiekis;
+} catch(std::exception& e) {
+    std::cerr<<"Ivyko klaida testuojant nuskaityma: "<<e.what()<<"\n";
+    return 0;
+}
 }

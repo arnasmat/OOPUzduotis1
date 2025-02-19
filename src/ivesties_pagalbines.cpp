@@ -10,42 +10,53 @@ std::mt19937 mt(rd());
 
 //Ivesties patikrinimo funkcija, kuri patikrina ar ivestas skaicius yra tarp nurodytu reziu (nuo - iki).
 int ivesties_patikrinimas(const int nuo, const int iki) {
-    int input{0};
-    while(input<nuo || input>iki) {
-        std::cin>>input;
-        if(std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
-            continue;
+        int input{0};
+    try {
+        while(input<nuo || input>iki) {
+            std::cin>>input;
+            if(std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
+                continue;
+            }
+            if(input<nuo || input>iki)
+                std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
         }
-        if(input<nuo || input>iki)
-            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
+        return input;
+    } catch(std::exception& e){
+        std::cerr<<"Ivyko ivedimo klaida: "<<e.what()<<"\n";
+        return -1;
     }
-    return input;
 }
 
 //Ivesties patikrinimo funkcijos pletinys turintis sustabdymo salyga (sustabdymo_salyga).
 int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_salyga) {
     int input{0};
-    while(input<nuo || input>iki) {
-        std::cin>>input;
-        if(std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
-            continue;
+    try {
+        while(input<nuo || input>iki) {
+            std::cin>>input;
+            if(std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
+                continue;
+            }
+            if(input==sustabdymo_salyga) {
+                return input;
+            }
+            if(input<nuo || input>iki)
+                std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
         }
-        if(input==sustabdymo_salyga) {
-            return input;
-        }
-        if(input<nuo || input>iki)
-            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
+        return input;
+    } catch(std::exception& e) {
+        std::cerr<<"Ivyko ivedimo klaida: "<<e.what()<<"\n";
+        return -1;
     }
-    return input;
 }
 
 void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_studentas) {
+    try {
         std::cout<<"Iveskit studento varda ir pavarde (noredami baigti iveskite 'n'): ";
         std::cin>>laikinas_studentas.vardas;
 
@@ -59,6 +70,12 @@ void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_
         }
 
         std::cin>>laikinas_studentas.pavarde;
+
+    } catch(std::exception& e) {
+        std::cerr<<"Ivyko klaida ivedant varda ir pavarde: "<<e.what()<<"\n";
+        laikinas_studentas.vardas = "Vardas";
+        laikinas_studentas.pavarde = "Pavarde";
+    }
 }
 
 void random_pazymiu_generavimas(Studentas& laikinas_studentas) {
