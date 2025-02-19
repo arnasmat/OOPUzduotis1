@@ -19,6 +19,6 @@ struct Studentas {
 };
 
 float galutinis_pazymys_vidurkis(Studentas &studentas);
-void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method);
+void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas);
 
 #endif // PAGALBINES_H

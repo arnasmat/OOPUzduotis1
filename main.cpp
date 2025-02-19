@@ -165,7 +165,7 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
 void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas, bool& praejo) {
     std::ifstream ivesties_failas(failo_pavadinimas);
     if(!ivesties_failas) {
-        std::cerr<<"Failas nerastas.";
+        std::cerr<<"Failas nerastas."<<std::endl;
         praejo = false;
         return;
     }
@@ -197,6 +197,37 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string fa
     }
 }
 
+double ivesties_testavimas(bool& praejo) {
+    std::chrono::duration<double> nuskaitymo_laiku_suma{0};
+    std::vector<Studentas> test_studentai;
+
+    std::string testavimo_failo_pavadinimas{};
+    std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: "<<std::endl;
+    std::cout<<"1. 10000 studentu"<<std::endl;
+    std::cout<<"2. 100000 studentu"<<std::endl;
+    std::cout<<"3. 1000000 studentu"<<std::endl;
+    int failo_pasirinkimas{ivesties_patikrinimas(1, 3)};
+    std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100). Rekomenduojama: 10: ";
+    int testu_kiekis{ivesties_patikrinimas(1,100)};
+
+    switch(failo_pasirinkimas) {
+        case 1: testavimo_failo_pavadinimas = "studentai10000.txt"; break;
+        case 2: testavimo_failo_pavadinimas = "studentai100000.txt"; break;
+        case 3: testavimo_failo_pavadinimas = "studentai1000000.txt"; break;
+    }
+
+    for(int i=0; i<testu_kiekis; i++) {
+        auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+        studentu_ivestis_is_failo(test_studentai, testavimo_failo_pavadinimas, praejo);
+        std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+        nuskaitymo_laiku_suma+=sugaistas_laikas;
+        std::cout<<"Failo nuskaitymas uztruko: "<<sugaistas_laikas.count()<<std::endl;
+        test_studentai.clear();
+    }
+    return nuskaitymo_laiku_suma.count()/testu_kiekis;
+}
+
+
 float galutinis_pazymys_vidurkis(Studentas &studentas) {
     unsigned int pazymiu_suma{0};
     if(studentas.pazymiai.size()==0) return 0;;
@@ -218,7 +249,7 @@ float galutinis_pazymys_mediana(Studentas &studentas) {
     return mediana*0.4 + studentas.egzamino_rezultatas*0.6;
 }
 
-void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
+void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas) {
 
     std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<std::endl;
     std::cout<<"1. Vidurki"<<std::endl;
@@ -283,43 +314,43 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
     }
 
     //konvertuoti i viena eilute
-    std::stringstream output;
+    std::stringstream isvestis{};
 
-    output<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde"
+    isvestis<<std::left<<std::setw(longest_surname > 7 ? longest_surname+2 : 8)<<"Pavarde"
     <<std::left<<std::setw(longest_name > 6 ? longest_name+2 : 8)<<"Vardas";
     if(rodyti_pasirinkimas==1 || rodyti_pasirinkimas==3) {
-        output<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
+        isvestis<<std::setw(17)<<std::left<<"Galutinis (Vid.)";
     }
     if(rodyti_pasirinkimas==2 || rodyti_pasirinkimas==3) {
-        output<<std::setw(17)<<std::left<<"Galutinis (Med.)";
-        output<<std::endl;
-        output<<"------------------------------------------------------------"<<std::endl;
+        isvestis<<std::setw(17)<<std::left<<"Galutinis (Med.)";
+        isvestis<<std::endl;
+        isvestis<<"------------------------------------------------------------"<<std::endl;
     }
 
-    output << std::left<<std::fixed << std::setprecision(2);
+    isvestis << std::left<<std::fixed << std::setprecision(2);
 
     if (rodyti_pasirinkimas == 1) {
         for (auto& i : studentai) {
-            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+            isvestis << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_vidurkis << "\n";
         }
     } else if (rodyti_pasirinkimas == 2) {
         for (auto& i : studentai) {
-            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+            isvestis << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     } else if (rodyti_pasirinkimas == 3) {
         for (auto& i : studentai) {
-            output << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
+            isvestis << std::setw(longest_surname > 7 ? longest_surname + 2 : 8) << i.pavarde
                    << std::setw(longest_name > 6 ? longest_name + 2 : 8) << i.vardas
                    << std::setw(17) << std::left << i.galutinis_vidurkis << "   "
                    << std::setw(17) << std::left << i.galutinis_mediana << "\n";
         }
     }
 
-    output_method << output.str();
+    isvesties_metodas << isvestis.str();
 }
 
 int main() {
@@ -344,32 +375,7 @@ int main() {
                 studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
             break;
             case 5: {
-                //sita visa sudet i viena funkcija kad butu grazu ir faina ir saule sviestu!!
-                std::chrono::duration<double> nuskaitymo_laiku_suma{0};
-                std::vector<Studentas> test_studentai;
-
-                std::string testavimo_failo_pavadinimas{};
-                std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: "<<std::endl;
-                std::cout<<"1. 10000 studentu"<<std::endl;
-                std::cout<<"2. 100000 studentu"<<std::endl;
-                std::cout<<"3. 1000000 studentu"<<std::endl;
-                int failo_pasirinkimas{ivesties_patikrinimas(1, 3)};
-
-                switch(failo_pasirinkimas) {
-                    case 1: testavimo_failo_pavadinimas = "studentai10000.txt"; break;
-                    case 2: testavimo_failo_pavadinimas = "studentai100000.txt"; break;
-                    case 3: testavimo_failo_pavadinimas = "studentai1000000.txt"; break;
-                }
-
-                for(int i=0; i<10; i++) {
-                    auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-                    studentu_ivestis_is_failo(test_studentai, testavimo_failo_pavadinimas, praejo);
-                    std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-                    nuskaitymo_laiku_suma+=sugaistas_laikas;
-                    std::cout<<sugaistas_laikas.count()<<std::endl;
-                    test_studentai.clear();
-                }
-                std::cout<<"Nuskaitymo is failo vidutinis laikas: "<<nuskaitymo_laiku_suma.count()/10<<std::endl;
+                std::cout<<"Nuskaitymo testavimo laikas: "<<ivesties_testavimas(praejo)<<std::endl;
                 praejo=false;
                 break;
             }
