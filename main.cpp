@@ -4,37 +4,39 @@
 
 #include "pagalbines.h"
 
-int input_validation(const int from, const int to) {
+//Ivesties patikrinimo funkcija, kuri patikrina ar ivestas skaicius yra tarp nurodytu reziu (nuo - iki).
+int ivesties_patikrinimas(const int nuo, const int iki) {
     int input{0};
-    while(input<from || input>to) {
+    while(input<nuo || input>iki) {
         std::cin>>input;
         if(std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<from<<" iki "<<to<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<std::endl;
             continue;
         }
-        if(input<from || input>to)
-            std::cout<<"Iveskite skaiciu nuo "<<from<<" iki "<<to<<std::endl;
+        if(input<nuo || input>iki)
+            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<std::endl;
     }
     return input;
 }
 
-int input_validation(const int from, const int to, const int break_condition) {
+//Ivesties patikrinimo funkcijos pletinys turintis sustabdymo salyga (sustabdymo_salyga).
+int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_salyga) {
     int input{0};
-    while(input<from || input>to) {
+    while(input<nuo || input>iki) {
         std::cin>>input;
         if(std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<from<<" iki "<<to<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<std::endl;
             continue;
         }
-        if(input==break_condition) {
+        if(input==sustabdymo_salyga) {
             return input;
         }
-        if(input<from || input>to)
-            std::cout<<"Iveskite skaiciu nuo "<<from<<" iki "<<to<<std::endl;
+        if(input<nuo || input>iki)
+            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<std::endl;
     }
     return input;
 }
@@ -49,15 +51,15 @@ int meniu(const std::string &ivesties_failo_pavadinimas) {
     std::cout<<"5. Nuskaitymo greicio testavimas"<<std::endl;
     std::cout<<"6. Baigti programos darba"<<std::endl;
     std::cout<<"------------------------------------------------------------"<<std::endl;
-    int meniu{input_validation(1,6)};
+    int meniu{ivesties_patikrinimas(1,6)};
     return meniu;
 }
 
-void isvesties_meniu(std::vector<Studentas>& studentai, std::string(isvesties_failo_pavadinimas)) {
+void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas) {
     std::cout<<"Kaip norite isvesti gautus rezultatus: "<<std::endl;
     std::cout<<"1. I terminala"<<std::endl;
     std::cout<<"2. I faila"<<std::endl;
-    int isvesties_pasirinkimas{input_validation(1, 2)};
+    int isvesties_pasirinkimas{ivesties_patikrinimas(1, 2)};
     if(isvesties_pasirinkimas==1) {
         isvestis(studentai, std::cout);
     } else {
@@ -92,10 +94,10 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
         std::cout<<"Iveskite pazymius, iveskite -1, jeigu norite baigti pazymiu ivedima: ";
         int pazymys{0};
         while(true) {
-            pazymys = input_validation(1,10, -1);
+            pazymys = ivesties_patikrinimas(1,10, -1);
             while(pazymys == -1 && laikinas_studentas.pazymiai.empty()) {
                 std::cout << "Iveskite bent viena pazymi: ";
-                pazymys = input_validation(1, 10);
+                pazymys = ivesties_patikrinimas(1, 10);
             }
             if(pazymys == -1)
                 break;
@@ -103,7 +105,7 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
         }
         std::cout<<"Iveskite egzamino rezultata: ";
         laikinas_studentas.egzamino_rezultatas = 0;
-        laikinas_studentas.egzamino_rezultatas = input_validation(1, 10);
+        laikinas_studentas.egzamino_rezultatas = ivesties_patikrinimas(1, 10);
         studentai.push_back(laikinas_studentas);
     }
 }
@@ -161,37 +163,32 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
 }
 
 void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas, bool& praejo) {
-    std::ifstream input(failo_pavadinimas);
-    if(!input) {
+    std::ifstream ivesties_failas(failo_pavadinimas);
+    if(!ivesties_failas) {
         std::cerr<<"Failas nerastas.";
-        praejo = true;
+        praejo = false;
         return;
     }
     std::stringstream buffer{};
-    buffer << input.rdbuf();
-    input.close();
+    buffer << ivesties_failas.rdbuf();
+    ivesties_failas.close();
 
     std::vector<std::string> split_linijos{};
     std::string linija{};
 
-    //kad praleisti pirma eilute, kurioje yra legenda
+    //Skips the first line of ivesties_failas as it stores the information about each column.
     std::getline(buffer, linija);
 
     while (std::getline(buffer, linija)) {
-        split_linijos.push_back(linija);
-    }
-
-    //Suskaidytu liniju konvertavimas i studentus
-    for(auto i: split_linijos) {
         Studentas laikinas_studentas{};
-        std::stringstream input(i);
+        std::stringstream ivestis(linija);
         std::string vardas{}, pavarde{};
-        input>>vardas;
+        ivestis>>vardas;
         laikinas_studentas.vardas = vardas;
-        input>>pavarde;
+        ivestis>>pavarde;
         laikinas_studentas.pavarde = pavarde;
         int pazymys{0};
-        while(input>>pazymys) {
+        while(ivestis>>pazymys) {
             laikinas_studentas.pazymiai.push_back(pazymys);
         }
         laikinas_studentas.egzamino_rezultatas = laikinas_studentas.pazymiai.back();
@@ -227,7 +224,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
     std::cout<<"1. Vidurki"<<std::endl;
     std::cout<<"2. Mediana"<<std::endl;
     std::cout<<"3. Abu (ir vidurki, ir mediana)"<<std::endl;
-    int rodyti_pasirinkimas{input_validation(1,3)};
+    int rodyti_pasirinkimas{ivesties_patikrinimas(1,3)};
 
     std::cout<<"------------------------------------------------------------"<<std::endl;
 
@@ -244,7 +241,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& output_method) {
     std::cout<<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai"<<std::endl;
     std::cout<<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai"<<std::endl;
     std::cout<<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai"<<std::endl;
-    int rusiavimo_pasirinkimas{input_validation(1,6)};
+    int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
 
 
     switch(rusiavimo_pasirinkimas) {
@@ -356,7 +353,7 @@ int main() {
                 std::cout<<"1. 10000 studentu"<<std::endl;
                 std::cout<<"2. 100000 studentu"<<std::endl;
                 std::cout<<"3. 1000000 studentu"<<std::endl;
-                int failo_pasirinkimas{input_validation(1, 3)};
+                int failo_pasirinkimas{ivesties_patikrinimas(1, 3)};
 
                 switch(failo_pasirinkimas) {
                     case 1: testavimo_failo_pavadinimas = "studentai10000.txt"; break;
