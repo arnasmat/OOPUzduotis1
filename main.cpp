@@ -41,6 +41,35 @@ int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_sal
     return input;
 }
 
+void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_studentas) {
+        std::cout<<"Iveskit studento varda ir pavarde (noredami baigti iveskite 'n'): ";
+        std::cin>>laikinas_studentas.vardas;
+
+        while (laikinas_studentas.vardas == "n" && studentai.empty()) {
+            std::cout<<"Iveskite bent viena studenta: \n";
+            std::cin>>laikinas_studentas.vardas;
+        }
+
+        if(laikinas_studentas.vardas == "n" && !studentai.empty()) {
+            return;
+        }
+
+        std::cin>>laikinas_studentas.pavarde;
+}
+
+void random_pazymiu_generavimas(Studentas& laikinas_studentas) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+
+    std::uniform_int_distribution<int> random(1, 10);
+    int random_pazymiu_kiekis = random(mt);
+    for(int i=0; i<random_pazymiu_kiekis; i++) {
+        laikinas_studentas.pazymiai.push_back(random(mt));
+
+    }
+    laikinas_studentas.egzamino_rezultatas = random(mt);
+}
+
 int meniu(const std::string &ivesties_failo_pavadinimas) {
     std::cout<<"------------------------------------------------------------\n"
             <<"Pasirinkite programos eiga: \n"
@@ -76,20 +105,14 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
 void studentu_ivestis(std::vector<Studentas>& studentai) {
     while(true) {
         Studentas laikinas_studentas{};
-        std::cout<<"Iveskit studento varda ir pavarde (noredami baigti iveskite 'n'): ";
-        std::cin>>laikinas_studentas.vardas;
 
-        while (laikinas_studentas.vardas == "n" && studentai.size() == 0) {
-            std::cout<<"Iveskite bent viena studenta: \n";
-            std::cin>>laikinas_studentas.vardas;
+        vardu_ivestis(studentai, laikinas_studentas);
+
+        if(laikinas_studentas.vardas == "n" && !studentai.empty()) {
+            return;
         }
 
-        if(laikinas_studentas.vardas == "n" && studentai.size() > 0) {
-            break;
-        }
-
-        std::cin>>laikinas_studentas.pavarde;
-        std::cout<<"Iveskite pazymius, iveskite -1, jeigu norite baigti pazymiu ivedima: ";
+        std::cout<<"Iveskite pazymius (jeigu norite baigti pazymiu ivedima, iveskite -1): ";
         int pazymys{0};
         while(true) {
             pazymys = ivesties_patikrinimas(1,10, -1);
@@ -111,55 +134,50 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
 void studentu_ivestis_random_2(std::vector<Studentas>& studentai) {
     while(true) {
         Studentas laikinas_studentas{};
-        std::cout<<"Iveskit studento varda ir pavarde(noredami baigti iveskite 'n'): ";
-        std::cin>>laikinas_studentas.vardas;
 
-        if(laikinas_studentas.vardas == "n") {
-            break;
+        vardu_ivestis(studentai, laikinas_studentas);
+
+        if(laikinas_studentas.vardas == "n" && !studentai.empty()) {
+            return;
         }
-        std::cin>>laikinas_studentas.pavarde;
 
-        srand(time(nullptr));
-        int random_pazymiu_kiekis{rand() % 10 + 1};
-        for(int i=0; i<random_pazymiu_kiekis; i++) {
-            laikinas_studentas.pazymiai.push_back(rand()%10 + 1);
+        random_pazymiu_generavimas(laikinas_studentas);
 
-        }
-        laikinas_studentas.egzamino_rezultatas = rand() % 10 + 1;
         studentai.push_back(laikinas_studentas);
     }
 }
 
 void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
 
+
+    //Random vardu generavimas
     std::vector<std::string> vyriski_vardai = {"Jonas", "Petras", "Antanas", "Kazys", "Tomas", "Darius", "Marius", "Rokas", "Mantas", "Mantas"};
     std::vector<std::string> moteriski_vardai = {"Ona", "Petra", "Antanina", "Kazyte", "Toma", "Darija", "Marija", "Rokas", "Mante", "Mante"};
 
     std::vector<std::string> vyriskos_pavardes = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Tomaitis", "Dariukaitis", "Mariukaitis", "Rokaitis", "Mantaitis"};
     std::vector<std::string> moteriskos_pavardes = {"Jonaitiene", "Petraitiene", "Antanaitiene", "Kazaitiene", "Tomaitiene", "Dariukaite", "Mariukaite", "Rokaite", "Mantaite"};
-    srand(time(nullptr));
-    int zmoniu_kiekis = rand()%10 + 1;
+    std::random_device rd;
+    std::mt19937 mt(rd());
+
+    std::uniform_int_distribution<int> random(1, 10);
+    int zmoniu_kiekis = random(mt);
     for(int i=0; i<zmoniu_kiekis; i++) {
         Studentas laikinas_studentas{};
-        if(rand()%2 == 1) {
-            laikinas_studentas.vardas = vyriski_vardai[rand()%vyriski_vardai.size()];
-            laikinas_studentas.pavarde = vyriskos_pavardes[rand()%vyriskos_pavardes.size()];
+        if(random(mt)%2 == 1) {
+            laikinas_studentas.vardas = vyriski_vardai[random(mt)%vyriski_vardai.size()];
+            laikinas_studentas.pavarde = vyriskos_pavardes[random(mt)%vyriskos_pavardes.size()];
         } else {
-            laikinas_studentas.vardas = moteriski_vardai[rand()%vyriski_vardai.size()];
-            laikinas_studentas.pavarde = moteriskos_pavardes[rand()%vyriskos_pavardes.size()];
+            laikinas_studentas.vardas = moteriski_vardai[random(mt)%vyriski_vardai.size()];
+            laikinas_studentas.pavarde = moteriskos_pavardes[random(mt)%vyriskos_pavardes.size()];
         }
 
+        random_pazymiu_generavimas(laikinas_studentas);
 
-        int random_pazymiu_kiekis{rand() % 10 + 1};
-        for(int i=0; i<random_pazymiu_kiekis; i++) {
-            laikinas_studentas.pazymiai.push_back(rand()%10 + 1);
-        }
-        laikinas_studentas.egzamino_rezultatas = rand() % 10 + 1;
         studentai.push_back(laikinas_studentas);
     }
 }
 
-void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas, bool& praejo) {
+void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const std::string& failo_pavadinimas, bool& praejo) {
     std::ifstream ivesties_failas(failo_pavadinimas);
     if(!ivesties_failas) {
         std::cerr<<"Failas nerastas.\n";
@@ -227,7 +245,7 @@ double ivesties_testavimas(bool& praejo) {
 
 float galutinis_pazymys_vidurkis(Studentas &studentas) {
     unsigned int pazymiu_suma{0};
-    if(studentas.pazymiai.size()==0) return 0;;
+    if(studentas.pazymiai.empty()) return 0;;
     for(const auto &i: studentas.pazymiai) {
         pazymiu_suma+=i;
     }
@@ -235,8 +253,8 @@ float galutinis_pazymys_vidurkis(Studentas &studentas) {
 }
 
 float galutinis_pazymys_mediana(Studentas &studentas) {
-    unsigned int mediana{0};
-    if(studentas.pazymiai.size()==0) return 0;;
+    float mediana{0};
+    if(studentas.pazymiai.empty()) return 0;
     std::sort(studentas.pazymiai.begin(), studentas.pazymiai.end());
     if(studentas.pazymiai.size()%2==0) {
         mediana = (studentas.pazymiai[studentas.pazymiai.size()/2.0] + studentas.pazymiai[studentas.pazymiai.size()/2.0-1])/2.0;
@@ -377,7 +395,7 @@ int main() {
                 praejo=false;
                 break;
             }
-            case 6:
+            default:
                 return 0;
         }
         if(praejo)
