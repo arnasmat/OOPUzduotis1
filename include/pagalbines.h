@@ -18,7 +18,7 @@ struct Studentas {
     float galutinis_mediana{};
 };
 
-float galutinis_pazymys_vidurkis(Studentas &studentas);
-void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas);
+extern std::random_device rd;
+extern std::mt19937 mt;
 
 #endif // PAGALBINES_H
