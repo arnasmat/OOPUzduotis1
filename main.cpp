@@ -12,11 +12,11 @@ int ivesties_patikrinimas(const int nuo, const int iki) {
         if(std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
             continue;
         }
         if(input<nuo || input>iki)
-            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
     }
     return input;
 }
@@ -29,36 +29,36 @@ int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_sal
         if(std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore();
-            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo"<<nuo<<" iki "<<iki<<"\n";
             continue;
         }
         if(input==sustabdymo_salyga) {
             return input;
         }
         if(input<nuo || input>iki)
-            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<std::endl;
+            std::cout<<"Iveskite skaiciu nuo "<<nuo<<" iki "<<iki<<"\n";
     }
     return input;
 }
 
 int meniu(const std::string &ivesties_failo_pavadinimas) {
-    std::cout<<"------------------------------------------------------------"<<std::endl;
-    std::cout<<"Pasirinkite programos eiga: "<<std::endl;
-    std::cout<<"1. Studentus ir pazymius ivesti ranka"<<std::endl;
-    std::cout<<"2. Generuoti pazymius, bet studentus ivesti ranka"<<std::endl;
-    std::cout<<"3. Generuoti pazymius ir studentus"<<std::endl;
-    std::cout<<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas<<std::endl;
-    std::cout<<"5. Nuskaitymo greicio testavimas"<<std::endl;
-    std::cout<<"6. Baigti programos darba"<<std::endl;
-    std::cout<<"------------------------------------------------------------"<<std::endl;
+    std::cout<<"------------------------------------------------------------\n"
+            <<"Pasirinkite programos eiga: \n"
+            <<"1. Studentus ir pazymius ivesti ranka\n"
+            <<"2. Generuoti pazymius, bet studentus ivesti ranka\n"
+            <<"3. Generuoti pazymius ir studentus\n"
+            <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas<<"\n"
+            <<"5. Nuskaitymo greicio testavimas\n"
+            <<"6. Baigti programos darba\n"
+            <<"------------------------------------------------------------\n";
     int meniu{ivesties_patikrinimas(1,6)};
     return meniu;
 }
 
 void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas) {
-    std::cout<<"Kaip norite isvesti gautus rezultatus: "<<std::endl;
-    std::cout<<"1. I terminala"<<std::endl;
-    std::cout<<"2. I faila"<<std::endl;
+    std::cout<<"Kaip norite isvesti gautus rezultatus: \n"
+            <<"1. I terminala\n"
+            <<"2. I faila\n";
     int isvesties_pasirinkimas{ivesties_patikrinimas(1, 2)};
     if(isvesties_pasirinkimas==1) {
         isvestis(studentai, std::cout);
@@ -68,21 +68,19 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
             isvestis(studentai, file);
             file.close();
         } else {
-            std::cerr << "Nepavyko atidaryti isvesties failo";
+            std::cerr << "Nepavyko atidaryti isvesties failo \n";
         }
     }
 }
 
 void studentu_ivestis(std::vector<Studentas>& studentai) {
     while(true) {
-        std::cout<<studentai.size();
-        std::cout<<"Iveskite studentus arba noredami baigti iveskite 'n': "<<std::endl;
         Studentas laikinas_studentas{};
-        std::cout<<"Iveskit studento varda ir pavarde: ";
+        std::cout<<"Iveskit studento varda ir pavarde (noredami baigti iveskite 'n'): ";
         std::cin>>laikinas_studentas.vardas;
 
         while (laikinas_studentas.vardas == "n" && studentai.size() == 0) {
-            std::cout<<"Iveskite bent viena studenta: "<<std::endl;
+            std::cout<<"Iveskite bent viena studenta: \n";
             std::cin>>laikinas_studentas.vardas;
         }
 
@@ -112,9 +110,8 @@ void studentu_ivestis(std::vector<Studentas>& studentai) {
 
 void studentu_ivestis_random_2(std::vector<Studentas>& studentai) {
     while(true) {
-        std::cout<<"Iveskite studentus arba noredami baigti iveskite 'n': "<<std::endl;
         Studentas laikinas_studentas{};
-        std::cout<<"Iveskit studento varda ir pavarde: ";
+        std::cout<<"Iveskit studento varda ir pavarde(noredami baigti iveskite 'n'): ";
         std::cin>>laikinas_studentas.vardas;
 
         if(laikinas_studentas.vardas == "n") {
@@ -165,7 +162,7 @@ void studentu_ivestis_random_3(std::vector<Studentas>& studentai) {
 void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string failo_pavadinimas, bool& praejo) {
     std::ifstream ivesties_failas(failo_pavadinimas);
     if(!ivesties_failas) {
-        std::cerr<<"Failas nerastas."<<std::endl;
+        std::cerr<<"Failas nerastas.\n";
         praejo = false;
         return;
     }
@@ -198,16 +195,14 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, std::string fa
 }
 
 double ivesties_testavimas(bool& praejo) {
-    std::chrono::duration<double> nuskaitymo_laiku_suma{0};
-    std::vector<Studentas> test_studentai;
 
     std::string testavimo_failo_pavadinimas{};
-    std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: "<<std::endl;
-    std::cout<<"1. 10000 studentu"<<std::endl;
-    std::cout<<"2. 100000 studentu"<<std::endl;
-    std::cout<<"3. 1000000 studentu"<<std::endl;
+    std::cout<<"Pasirinkite koki testavimo faila norite nuskaityti: \n";
+    std::cout<<"1. 10000 studentu\n";
+    std::cout<<"2. 100000 studentu\n";
+    std::cout<<"3. 1000000 studentu\n";
     int failo_pasirinkimas{ivesties_patikrinimas(1, 3)};
-    std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100). Rekomenduojama: 10: ";
+    std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100): \n";
     int testu_kiekis{ivesties_patikrinimas(1,100)};
 
     switch(failo_pasirinkimas) {
@@ -216,17 +211,19 @@ double ivesties_testavimas(bool& praejo) {
         case 3: testavimo_failo_pavadinimas = "studentai1000000.txt"; break;
     }
 
+    std::chrono::duration<double> nuskaitymo_laiku_suma{0};
+    std::vector<Studentas> test_studentai;
+
     for(int i=0; i<testu_kiekis; i++) {
         auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
         studentu_ivestis_is_failo(test_studentai, testavimo_failo_pavadinimas, praejo);
         std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
         nuskaitymo_laiku_suma+=sugaistas_laikas;
-        std::cout<<"Failo nuskaitymas uztruko: "<<sugaistas_laikas.count()<<std::endl;
+        std::cout<<"Failo nuskaitymas uztruko: "<<sugaistas_laikas.count()<<"\n";
         test_studentai.clear();
     }
     return nuskaitymo_laiku_suma.count()/testu_kiekis;
 }
-
 
 float galutinis_pazymys_vidurkis(Studentas &studentas) {
     unsigned int pazymiu_suma{0};
@@ -251,13 +248,13 @@ float galutinis_pazymys_mediana(Studentas &studentas) {
 
 void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas) {
 
-    std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<std::endl;
-    std::cout<<"1. Vidurki"<<std::endl;
-    std::cout<<"2. Mediana"<<std::endl;
-    std::cout<<"3. Abu (ir vidurki, ir mediana)"<<std::endl;
+    std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<"\n"
+            <<"1. Vidurki\n"
+            <<"2. Mediana\n"
+            <<"3. Abu (ir vidurki, ir mediana)\n";
     int rodyti_pasirinkimas{ivesties_patikrinimas(1,3)};
 
-    std::cout<<"------------------------------------------------------------"<<std::endl;
+    std::cout<<"------------------------------------------------------------\n";
 
     for(auto &i: studentai) {
             i.galutinis_vidurkis = galutinis_pazymys_vidurkis(i);
@@ -265,13 +262,13 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
     }
 
 
-    std::cout<<"Pasirinkite kaip norite rusiuoti: "<<std::endl;
-    std::cout<<"1. Rusiuoti pagal varda"<<std::endl;
-    std::cout<<"2. Rusiuoti pagal pavarde"<<std::endl;
-    std::cout<<"3. Rusiuoti pagal galutini pazymi pagal vidurki mazejanciai"<<std::endl;
-    std::cout<<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai"<<std::endl;
-    std::cout<<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai"<<std::endl;
-    std::cout<<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai"<<std::endl;
+    std::cout<<"Pasirinkite kaip norite rusiuoti: \n"
+            <<"1. Rusiuoti pagal varda\n"
+            <<"2. Rusiuoti pagal pavarde\n"
+            <<"3. Rusiuoti pagal galutini pazymi pagal vidurki mazejanciai\n"
+            <<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai\n"
+            <<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai\n"
+            <<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai\n";
     int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
 
 
@@ -323,9 +320,9 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
     }
     if(rodyti_pasirinkimas==2 || rodyti_pasirinkimas==3) {
         isvestis<<std::setw(17)<<std::left<<"Galutinis (Med.)";
-        isvestis<<std::endl;
-        isvestis<<"------------------------------------------------------------"<<std::endl;
     }
+    isvestis<<"\n"
+              "------------------------------------------------------------\n";
 
     isvestis << std::left<<std::fixed << std::setprecision(2);
 
@@ -354,7 +351,7 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
 }
 
 int main() {
-    const std::string ivesties_failo_pavadinimas{"studentai10000.txt"};
+    const std::string ivesties_failo_pavadinimas{"studentai1000000.txt"};
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
 
     std::vector<Studentas> studentai;
@@ -375,7 +372,8 @@ int main() {
                 studentu_ivestis_is_failo(studentai, ivesties_failo_pavadinimas, praejo);
             break;
             case 5: {
-                std::cout<<"Nuskaitymo testavimo laikas: "<<ivesties_testavimas(praejo)<<std::endl;
+                double laikas{ivesties_testavimas(praejo)};
+                std::cout<<"Vidutinis failo skaitymo laikas: "<<laikas<<"\n";
                 praejo=false;
                 break;
             }
