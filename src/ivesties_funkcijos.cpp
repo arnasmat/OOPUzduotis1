@@ -12,7 +12,7 @@ int meniu(const fs::path &ivesties_failo_pavadinimas) {
             <<"1. Studentus ir pazymius ivesti ranka\n"
             <<"2. Generuoti pazymius, bet studentus ivesti ranka\n"
             <<"3. Generuoti pazymius ir studentus\n"
-            <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas<<"\n"
+            <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas.filename()<<"\n"
             <<"5. Pasirinkti ivesties faila\n"
             <<"6. Nuskaitymo greicio testavimas\n"
             <<"7. Baigti programos darba\n"
@@ -126,7 +126,8 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const fs::path
 
     while (std::getline(buffer, linija)) {
         Studentas laikinas_studentas{};
-        std::stringstream ivestis(linija);
+        //pakeiciau i istringstreama, nes pratestavus atrodo greiciau xd, jeigu sukels bedu - pakeist atgal
+        std::istringstream ivestis(linija);
         std::string vardas{}, pavarde{};
         ivestis>>vardas;
         laikinas_studentas.vardas = vardas;

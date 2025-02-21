@@ -23,7 +23,7 @@ if(studentas.pazymiai.size() % 2 == 0) {
 } else {
     mediana = static_cast<float>(studentas.pazymiai[studentas.pazymiai.size() / 2]);
 }
-    return mediana * 0.4f + static_cast<float>(studentas.egzamino_rezultatas)*0.6f;
+    return mediana * 0.4f + static_cast<float>(studentas.egzamino_rezultatas) * 0.6f;
 }
 
 void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas) {
