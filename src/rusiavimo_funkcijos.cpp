@@ -18,8 +18,8 @@ void studentu_kategorizacija(std::vector<Studentas>& studentai) {
     int kategorizuoti_pagal = ivesties_patikrinimas(1,2);
 
     //jeigu jie visad surusiuoti, tai gal su kokiu binary searcho algoritmu?
-    //std::partition_point turbut, bet nzn, kol kas ir O(n) tiks, nebutina O(logn) lol
-    //Tik tada butinai reiketu patikrinimus, kad vektorius surusiuotas pagal vid arba med
+    //std::partition_point turbut, bet tng db, kol kas ir O(n) tiks, nebutina O(logn) lol
+    //Tik tada butinai reiketu patikrinimus, kad vektorius surusiuotas pagal vid arba med.. aaaajjjj echhhh
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
     if(kategorizuoti_pagal == 1) {
         for(auto& i: studentai) {
@@ -37,6 +37,16 @@ void studentu_kategorizacija(std::vector<Studentas>& studentai) {
                 neislaike_studentai.push_back(i);
             }
         }
+    }
+    try {
+        std::ofstream islaike_output("../data/output/islaike_studentai.txt");
+        isvestis(islaike_studentai, islaike_output, 3, 3);
+        islaike_output.close();
+        std::ofstream neislaike_output("../data/output/neislaike_studentai.txt");
+        isvestis(neislaike_studentai, neislaike_output, 3, 3);
+        neislaike_output.close();
+    } catch(std::exception& e) {
+        std::cerr<<"Ivyko klaida isvedant i failus failus: "<<e.what()<<"\n";
     }
 }
 

@@ -7,6 +7,7 @@
 #include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
 #include "../include/failu_pasirinkimo_funkcijos.h"
 #include "../include/ivesties_pagalbines.h"
+#include "../include/rusiavimo_funkcijos.h"
 
 int main() {
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};

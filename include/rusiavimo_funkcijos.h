@@ -7,6 +7,7 @@
 
 #include "pagalbines.h"
 
+void studentu_kategorizacija(std::vector<Studentas>& studentai);
 void studentu_rusiavimas(std::vector<Studentas>& studentai, int rusiavimo_pasirinkimas);
 void studentu_galutiniu_pazymiu_skaiciavimas(std::vector<Studentas>& studentai);
 
