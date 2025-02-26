@@ -2,10 +2,9 @@
 // Created by User on 2025-02-26.
 //
 
-#include "failu_generavimas.h"
+#include "../include/failu_generavimas.h"
 
 void failu_generavimas(int studentu_kiekis){
-    std::ofstream isvesties_failas("studentai_isvestis" + std::to_string(studentu_kiekis) + ".txt");
     // std::vector<Studentas> studentai{};
     // studentai.reserve(studentu_kiekis);
 
@@ -40,7 +39,7 @@ void failu_generavimas(int studentu_kiekis){
         output<<random_pazymys(mt)<<"\n";
     }
 
-
+    std::ofstream isvesties_failas("../data/output/studentai_isvestis" + std::to_string(studentu_kiekis) + ".txt");
     isvesties_failas<<output.str();
     isvesties_failas.close();
 }

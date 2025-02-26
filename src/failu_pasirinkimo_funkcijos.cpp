@@ -13,6 +13,10 @@ std::vector<fs::path> gauti_failus_ivesties_direktorijoje(){
             if(entry.path().extension() == ".txt") {
                 failai.push_back(entry.path());
             }
+        for (const auto & entry : fs::directory_iterator("../data/output"))
+            if(entry.path().extension() == ".txt") {
+                failai.push_back(entry.path());
+            }
         return failai;
     } catch(std::exception& e) {
     std::cerr<<"Ivyko klaida nuskaitant testinius failus: "<<e.what()<<"\n";
