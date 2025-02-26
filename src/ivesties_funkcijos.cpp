@@ -15,9 +15,10 @@ int meniu(const fs::path &ivesties_failo_pavadinimas) {
             <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas.filename()<<"\n"
             <<"5. Pasirinkti ivesties faila\n"
             <<"6. Nuskaitymo greicio testavimas\n"
-            <<"7. Baigti programos darba\n"
+            <<"7. Generuoti faila\n"
+            <<"8. Baigti programos darba\n"
             <<"------------------------------------------------------------\n";
-    int meniu{ivesties_patikrinimas(1,7)};
+    int meniu{ivesties_patikrinimas(1,8)};
     return meniu;
 }
 

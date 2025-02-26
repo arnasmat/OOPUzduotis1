@@ -6,6 +6,8 @@
 #include "../include/ivesties_funkcijos.h"
 #include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
 #include "../include/failu_pasirinkimo_funkcijos.h"
+#include "../include/failu_generavimas.h"
+#include "../include/ivesties_pagalbines.h"
 
 int main() {
     const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
@@ -37,6 +39,13 @@ int main() {
                 double laikas{ivesties_testavimas(praejo)};
                 std::cout<<"Vidutinis failo skaitymo laikas: "<<laikas<<"\n";
                 praejo=false;
+                break;
+            }
+            case 7: {
+                std::cout<<"Iveskite studentu kieki generuojame faile: \n";
+                int studentu_kiekis{ivesties_patikrinimas(1,10000000)};
+                failu_generavimas(studentu_kiekis);
+                praejo = false;
                 break;
             }
             default:
