@@ -11,6 +11,6 @@ void failu_generavimas(int studentu_kiekis);
 float galutinis_pazymys_vidurkis(Studentas &studentas);
 float galutinis_pazymys_mediana(Studentas &studentas);
 void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas);
-void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas);
+void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas, int rodyti_pasirinkimas, int rusiavimo_pasirinkimas);
 
 #endif //ISVESTIES_IR_SKAICIAVIMU_FUNKCIJOS_H

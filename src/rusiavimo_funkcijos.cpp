@@ -7,22 +7,35 @@
 #include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
 
 void studentu_kategorizacija(std::vector<Studentas>& studentai) {
-    //ekvivalentu "kietekams" ir "vargsiukams", tiesiog graziau pavadinta
+    //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
     std::vector<Studentas> islaike_studentai{};
     std::vector<Studentas> neislaike_studentai{};
 
-    std::cout<<"Pagal ka rusiuoti studentus: \n"
-    <<"1. Galutini pazymi pagal vidurki"
-    <<"2. Galutini pazymi pagal mediana";
+    std::cout<<"Pagal ka kategorizuoti studentus: \n"
+    <<"1. Galutini pazymi pagal vidurki\n"
+    <<"2. Galutini pazymi pagal mediana\n";
 
-    int rusiuoti_pagal = ivesties_patikrinimas(1,2);
-    if(rusiuoti_pagal == 1) {
+    int kategorizuoti_pagal = ivesties_patikrinimas(1,2);
+
+    //jeigu jie visad surusiuoti, tai gal su kokiu binary searcho algoritmu?
+    //std::partition_point turbut, bet nzn, kol kas ir O(n) tiks, nebutina O(logn) lol
+    //Tik tada butinai reiketu patikrinimus, kad vektorius surusiuotas pagal vid arba med
+    studentu_galutiniu_pazymiu_skaiciavimas(studentai);
+    if(kategorizuoti_pagal == 1) {
         for(auto& i: studentai) {
-                i.galutinis_vidurkis = galutinis_pazymys_vidurkis(i);
+            if(i.galutinis_vidurkis >= 5.0f) {
+                islaike_studentai.push_back(i);
+            } else {
+                neislaike_studentai.push_back(i);
+            }
         }
     } else {
         for(auto& i: studentai) {
-            i.galutinis_vidurkis = galutinis_pazymys_mediana(i);
+            if(i.galutinis_mediana >= 5.0f) {
+                islaike_studentai.push_back(i);
+            } else {
+                neislaike_studentai.push_back(i);
+            }
         }
     }
 }

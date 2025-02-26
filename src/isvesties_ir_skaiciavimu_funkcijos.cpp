@@ -72,12 +72,28 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
             <<"1. I terminala\n"
             <<"2. I faila\n";
     int isvesties_pasirinkimas{ivesties_patikrinimas(1, 2)};
+
+    std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<"\n"
+        <<"1. Vidurki\n"
+        <<"2. Mediana\n"
+        <<"3. Abu (ir vidurki, ir mediana)\n";
+    int rodyti_pasirinkimas{ivesties_patikrinimas(1,3)};
+
+    std::cout<<"Pasirinkite kaip norite rusiuoti: \n"
+        <<"1. Rusiuoti pagal varda\n"
+        <<"2. Rusiuoti pagal pavarde\n"
+        <<"3. Rusiuoti pagal galutini pazymi pagal vidurki mazejanciai\n"
+        <<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai\n"
+        <<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai\n"
+        <<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai\n";
+
+    int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
     if(isvesties_pasirinkimas==1) {
-        isvestis(studentai, std::cout);
+        isvestis(studentai, std::cout, rodyti_pasirinkimas, rusiavimo_pasirinkimas);
     } else {
         std::ofstream file(isvesties_failo_pavadinimas);
         if (file.is_open()) {
-            isvestis(studentai, file);
+            isvestis(studentai, file, rodyti_pasirinkimas, rusiavimo_pasirinkimas);
             file.close();
         } else {
             std::cerr << "Nepavyko atidaryti isvesties failo \n";
@@ -85,26 +101,8 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
     }
 }
 
-void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas) {
-    std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<"\n"
-            <<"1. Vidurki\n"
-            <<"2. Mediana\n"
-            <<"3. Abu (ir vidurki, ir mediana)\n";
-    int rodyti_pasirinkimas{ivesties_patikrinimas(1,3)};
-
-    std::cout<<"------------------------------------------------------------\n";
-
+void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas, const int rodyti_pasirinkimas, const int rusiavimo_pasirinkimas) {
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
-
-    std::cout<<"Pasirinkite kaip norite rusiuoti: \n"
-            <<"1. Rusiuoti pagal varda\n"
-            <<"2. Rusiuoti pagal pavarde\n"
-            <<"3. Rusiuoti pagal galutini pazymi pagal vidurki mazejanciai\n"
-            <<"4. Rusiuoti pagal galutini pazymi pagal vidurki didejanciai\n"
-            <<"5. Rusiuoti pagal galutini pazymi pagal mediana mazejanciai\n"
-            <<"6. Rusiuoti pagal galutini pazymi pagal mediana didejanciai\n";
-
-    int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
 
     studentu_rusiavimas(studentai, rusiavimo_pasirinkimas);
 
@@ -119,8 +117,8 @@ void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas
         }
     }
 
-    int isvesties_pavardes_ilgis{static_cast<int>((longest_surname > 7 ? longest_surname + 2 : 8))};
-    int isvesties_vardo_ilgis{static_cast<int>((longest_name > 6 ? longest_name + 2 : 8))};
+    int isvesties_pavardes_ilgis{((longest_surname > 7 ? longest_surname + 2 : 8))};
+    int isvesties_vardo_ilgis{((longest_name > 6 ? longest_name + 2 : 8))};
 
     //Konvertuoti visa isvesti i viena eilute, kad ji butu greitesne.
     std::stringstream isvestis{};
