@@ -50,27 +50,45 @@ int main() {
             }
             case 8: {
                 std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
-                for(auto &i: kiekiai) {
-                    std::vector<Studentas> temp_studentai{};
+
+                /*for(auto &i: kiekiai) {
                     std::chrono::duration<double> testavimo_laikas{0};
-                    auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-                    failu_generavimas(i);
-                    auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-                    std::cout<<"Failo su "<<i<<" studentais generavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-                    testavimo_laikas+=sugaistas_laikas;
+                    for(int j=0; j<3; j++) {
+                        auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+                        failu_generavimas(i);
+                        auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+                        std::cout<<"Failo su "<<i<<" studentais generavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+                        testavimo_laikas+=sugaistas_laikas;
+                    }
+                    std::cout<<i << " vidurkis: " << testavimo_laikas.count()/3 <<"\n";
+                }*/
 
-                    fs::path failo_pavadinimas{"../data/input/studentai_isvestis" + std::to_string(i) + ".txt"};
-                    nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-                    studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
-                    sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-                    std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-                    testavimo_laikas+=sugaistas_laikas;
+                for(auto &i: kiekiai) {
+                    std::chrono::duration<double> testavimo_laiku_suma{0};
 
-                    studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+                    for(int j=0; j<3; j++) {
+                        std::vector<Studentas> temp_studentai{};
+                        std::chrono::duration<double> testavimo_laikas{0};
 
-                    std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
+                        fs::path failo_pavadinimas{"../data/input/studentai_isvestis" + std::to_string(i) + ".txt"};
+                        auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+                        studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
+                        auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+                        std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+                        testavimo_laikas+=sugaistas_laikas;
+
+                        studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+
+                        std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
+                        std::cout<<"\n";
+                        testavimo_laiku_suma +=testavimo_laikas;
+                    }
+                    std::cout<<i << " vidurkis: " << testavimo_laiku_suma.count()/3 <<"\n";
+                    std::cout<<"\n---------------------------------------------------\n";
+                    std::cout<<"\n---------------------------------------------------\n";
                     std::cout<<"\n---------------------------------------------------\n";
                 }
+
             }
             default:
                 return 0;
