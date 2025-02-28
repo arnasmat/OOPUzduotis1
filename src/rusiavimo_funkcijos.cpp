@@ -6,44 +6,56 @@
 #include "../include/ivesties_pagalbines.h"
 #include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
 
-void studentu_kategorizacija(std::vector<Studentas>& studentai) {
+void studentu_kategorizacija(std::vector<Studentas>& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal) {
     //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
     std::vector<Studentas> islaike_studentai{};
     std::vector<Studentas> neislaike_studentai{};
 
-    std::cout<<"Pagal ka kategorizuoti studentus: \n"
-    <<"1. Galutini pazymi pagal vidurki\n"
-    <<"2. Galutini pazymi pagal mediana\n";
-
-    int kategorizuoti_pagal = ivesties_patikrinimas(1,2);
-
-    //jeigu jie visad surusiuoti, tai gal su kokiu binary searcho algoritmu?
-    //std::partition_point turbut, bet tng db, kol kas ir O(n) tiks, nebutina O(logn) lol
-    //Tik tada butinai reiketu patikrinimus, kad vektorius surusiuotas pagal vid arba med.. aaaajjjj echhhh
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
-    if(kategorizuoti_pagal == 1) {
-        for(auto& i: studentai) {
-            if(i.galutinis_vidurkis >= 5.0f) {
-                islaike_studentai.push_back(i);
-            } else {
-                neislaike_studentai.push_back(i);
-            }
-        }
+    if(rusiuoti_pagal==1 || rusiuoti_pagal==2) {
+        std::cout<<"Studentu kategorizacija automatiskai vykdoma pagal vidurki, nes jusu pasirinkimas netinkamas kategorizacijai";
+        studentu_rusiavimas(studentai, 3);
     } else {
-        for(auto& i: studentai) {
-            if(i.galutinis_mediana >= 5.0f) {
-                islaike_studentai.push_back(i);
-            } else {
-                neislaike_studentai.push_back(i);
-            }
-        }
+        studentu_rusiavimas(studentai, rusiuoti_pagal);
     }
+
+    if(rusiuoti_pagal == 3) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_vidurkis>=5.0f;}
+            );
+            islaike_studentai.assign(studentai.begin(), partition_iteratorius);
+            neislaike_studentai.assign(partition_iteratorius, studentai.end());
+    } else if(rusiuoti_pagal == 4) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_vidurkis<=5.0f;}
+            );
+        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
+        islaike_studentai.assign(partition_iteratorius, studentai.end());
+    }else if(rusiuoti_pagal==5){
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_mediana>=5.0f;}
+            );
+            islaike_studentai.assign(studentai.begin(), partition_iteratorius);
+            neislaike_studentai.assign(partition_iteratorius, studentai.end());
+    } else if(rusiuoti_pagal==6){
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_mediana<=5.0f;}
+            );
+        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
+        islaike_studentai.assign(partition_iteratorius, studentai.end());
+    }
+
+    studentai.clear();
     try {
         std::ofstream islaike_output("../data/output/islaike_studentai.txt");
-        isvestis(islaike_studentai, islaike_output, 3, 3);
+        isvestis(islaike_studentai, islaike_output, rodyti_pasirinkimas);
         islaike_output.close();
         std::ofstream neislaike_output("../data/output/neislaike_studentai.txt");
-        isvestis(neislaike_studentai, neislaike_output, 3, 3);
+        isvestis(neislaike_studentai, neislaike_output, rodyti_pasirinkimas);
         neislaike_output.close();
     } catch(std::exception& e) {
         std::cerr<<"Ivyko klaida isvedant i failus failus: "<<e.what()<<"\n";

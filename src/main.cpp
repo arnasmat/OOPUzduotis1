@@ -10,7 +10,7 @@
 #include "../include/rusiavimo_funkcijos.h"
 
 int main() {
-    const std::string isvesties_failo_pavadinimas{"rezultatai.txt"};
+    const std::string isvesties_failo_pavadinimas{"../data/output/rezultatai.txt"};
     fs::path ivesties_failas{"../data/input/kursiokai.txt"};
 
     std::vector<Studentas> studentai;
@@ -48,11 +48,14 @@ int main() {
                 praejo = false;
                 break;
             }
+            case 8:
+
             default:
                 return 0;
         }
         if(praejo)
             isvesties_meniu(studentai, isvesties_failo_pavadinimas);
+
     }
 
 }

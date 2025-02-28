@@ -41,7 +41,7 @@ void failu_generavimas(int studentu_kiekis){
         output<<random_pazymys(mt)<<"\n";
     }
 
-    std::ofstream isvesties_failas("../data/output/studentai_isvestis" + std::to_string(studentu_kiekis) + ".txt");
+    std::ofstream isvesties_failas("../data/input/studentai_isvestis" + std::to_string(studentu_kiekis) + ".txt");
     isvesties_failas<<output.str();
     isvesties_failas.close();
 }
@@ -70,8 +70,9 @@ if(studentas.pazymiai.size() % 2 == 0) {
 void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isvesties_failo_pavadinimas) {
     std::cout<<"Kaip norite isvesti gautus rezultatus: \n"
             <<"1. I terminala\n"
-            <<"2. I faila\n";
-    int isvesties_pasirinkimas{ivesties_patikrinimas(1, 2)};
+            <<"2. I faila\n"
+            <<"3. I du failus: islaike_studentai ir neislaike_studentai\n";
+    int isvesties_pasirinkimas{ivesties_patikrinimas(1, 3)};
 
     std::cout<<"Pasirinkite ka norite matyti isvedant studentus: "<<"\n"
         <<"1. Vidurki\n"
@@ -89,22 +90,25 @@ void isvesties_meniu(std::vector<Studentas>& studentai, const std::string &isves
 
     int rusiavimo_pasirinkimas{ivesties_patikrinimas(1,6)};
     if(isvesties_pasirinkimas==1) {
-        isvestis(studentai, std::cout, rodyti_pasirinkimas, rusiavimo_pasirinkimas);
-    } else {
+        studentu_galutiniu_pazymiu_skaiciavimas(studentai);
+        studentu_rusiavimas(studentai, rusiavimo_pasirinkimas);
+        isvestis(studentai, std::cout, rodyti_pasirinkimas);
+    } else if(isvesties_pasirinkimas==2){
         std::ofstream file(isvesties_failo_pavadinimas);
         if (file.is_open()) {
-            isvestis(studentai, file, rodyti_pasirinkimas, rusiavimo_pasirinkimas);
+            studentu_galutiniu_pazymiu_skaiciavimas(studentai);
+            studentu_rusiavimas(studentai, rusiavimo_pasirinkimas);
+            isvestis(studentai, file, rodyti_pasirinkimas);
             file.close();
         } else {
             std::cerr << "Nepavyko atidaryti isvesties failo \n";
         }
+    } else if(isvesties_pasirinkimas==3) {
+        studentu_kategorizacija(studentai, rodyti_pasirinkimas, rusiavimo_pasirinkimas);
     }
 }
 
-void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas, const int rodyti_pasirinkimas, const int rusiavimo_pasirinkimas) {
-    studentu_galutiniu_pazymiu_skaiciavimas(studentai);
-
-    studentu_rusiavimas(studentai, rusiavimo_pasirinkimas);
+void isvestis(std::vector<Studentas>& studentai, std::ostream& isvesties_metodas, const int rodyti_pasirinkimas) {
 
     int longest_name{0};
     int longest_surname{0};
