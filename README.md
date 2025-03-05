@@ -1,7 +1,7 @@
 # OOPUzduotis1
 
 ### Failų generavimo testavimo nuotraukos:
-![img.png](img.png) </br>
+![img.png](https://github.com/penktastal/OOPUzduotis1/raw/v0.4/img.png) </br>
 
 ## Darbo su failais analize
 
