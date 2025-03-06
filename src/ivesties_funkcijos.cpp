@@ -2,9 +2,9 @@
 // Created by User on 2025-02-19.
 //
 
-#include "../include/ivesties_funkcijos.h"
-#include "../include/ivesties_pagalbines.h"
-#include "../include/failu_pasirinkimo_funkcijos.h"
+#include <ivesties_funkcijos.h>
+#include <ivesties_pagalbines.h>
+#include <failu_pasirinkimo_funkcijos.h>
 
 int meniu(const fs::path &ivesties_failo_pavadinimas) {
     std::cout<<"------------------------------------------------------------\n"

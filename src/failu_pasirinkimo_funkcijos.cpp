@@ -2,9 +2,9 @@
 // Created by User on 2025-02-19.
 //
 
-#include "../include/failu_pasirinkimo_funkcijos.h"
-#include "../include/pagalbines.h"
-#include "../include/ivesties_pagalbines.h"
+#include <failu_pasirinkimo_funkcijos.h>
+#include <pagalbines.h>
+#include <ivesties_pagalbines.h>
 
 std::vector<fs::path> gauti_failus_ivesties_direktorijoje(){
     try {

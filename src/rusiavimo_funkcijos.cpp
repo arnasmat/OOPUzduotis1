@@ -2,9 +2,9 @@
 // Created by User on 2025-02-26.
 //
 
-#include "../include/rusiavimo_funkcijos.h"
-#include "../include/ivesties_pagalbines.h"
-#include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
+#include <rusiavimo_funkcijos.h>
+#include <ivesties_pagalbines.h>
+#include <isvesties_ir_skaiciavimu_funkcijos.h>
 
 
 void studentu_rusiavimas(std::vector<Studentas>& studentai, int rusiavimo_pasirinkimas) {

@@ -2,7 +2,7 @@
 // Created by User on 2025-02-19.
 //
 
-#include "../include/ivesties_pagalbines.h"
+#include <ivesties_pagalbines.h>
 
 //Globalus rd ir mt, kad ju seedinimas butu tik viena karta inicializuojant programa,
 //extern apibreztas pagalbines.h, bet normalus apibrezimas cia.

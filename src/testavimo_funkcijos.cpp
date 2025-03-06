@@ -2,8 +2,7 @@
 // Created by User on 2025-03-06.
 //
 
-#include "testavimo_funkcijos.h"
-
+#include <testavimo_funkcijos.h>
 #include <failu_pasirinkimo_funkcijos.h>
 #include <ivesties_funkcijos.h>
 #include <ivesties_pagalbines.h>
@@ -17,8 +16,7 @@ void testavimo_rezimas(bool& praejo) {
                 <<"3. Failu nuskaitymo, rusiavimo, kategorizavimo ir isvesties greiti\n";
         praejo=false;
         int testavimo_pasirinkimas{ivesties_patikrinimas(1,3)};
-        // std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
-        std::vector<int> kiekiai = {1000, 10000, 100000};
+        std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
         switch(testavimo_pasirinkimas) {
             case 1:
                 failu_kurimo_testavimas(kiekiai);

@@ -2,11 +2,11 @@
 // Created by User on 2025-02-10.
 //
 
-#include "../include/pagalbines.h"
-#include "../include/ivesties_funkcijos.h"
-#include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
-#include "../include/failu_pasirinkimo_funkcijos.h"
-#include "../include/ivesties_pagalbines.h"
+#include <pagalbines.h>
+#include <ivesties_funkcijos.h>
+#include <isvesties_ir_skaiciavimu_funkcijos.h>
+#include <failu_pasirinkimo_funkcijos.h>
+#include <ivesties_pagalbines.h>
 #include <testavimo_funkcijos.h>
 
 int main() {

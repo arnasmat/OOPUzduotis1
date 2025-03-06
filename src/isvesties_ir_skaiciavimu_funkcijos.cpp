@@ -2,9 +2,9 @@
 // Created by User on 2025-02-19.
 //
 
-#include "../include/isvesties_ir_skaiciavimu_funkcijos.h"
-#include "../include/ivesties_pagalbines.h"
-#include "../include/rusiavimo_funkcijos.h"
+#include <isvesties_ir_skaiciavimu_funkcijos.h>
+#include <ivesties_pagalbines.h>
+#include <rusiavimo_funkcijos.h>
 
 //globalus kintamieji testavimo laikams
 extern std::chrono::duration<double> testavimo_laikas;
