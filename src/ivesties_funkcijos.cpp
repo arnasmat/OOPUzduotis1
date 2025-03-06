@@ -14,12 +14,11 @@ int meniu(const fs::path &ivesties_failo_pavadinimas) {
             <<"3. Generuoti pazymius ir studentus\n"
             <<"4. Ivesti pazymius is failo, siuo metu pasirinktas failas: "<<ivesties_failo_pavadinimas.filename()<<"\n"
             <<"5. Pasirinkti ivesties faila\n"
-            <<"6. Nuskaitymo greicio testavimas\n"
-            <<"7. Generuoti faila\n"
-            <<"8. Pilnas testavimas\n"
-            <<"9. Baigti programos darba\n"
+            <<"6. Generuoti faila\n"
+            <<"7. Testavimo rezimas\n"
+            <<"8. Baigti programos darba\n"
             <<"------------------------------------------------------------\n";
-    int meniu{ivesties_patikrinimas(1,9)};
+    int meniu{ivesties_patikrinimas(1,8)};
     return meniu;
 }
 
@@ -143,27 +142,4 @@ void studentu_ivestis_is_failo(std::vector<Studentas>& studentai, const fs::path
         laikinas_studentas.pazymiai.pop_back();
         studentai.push_back(laikinas_studentas);
     }
-}
-
-double ivesties_testavimas(bool& praejo) {
-    fs::path testavimo_failas{pasirinkti_faila_is_testiniu()};
-    std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100): \n";
-    int testu_kiekis{ivesties_patikrinimas(1,100)};
-
-    std::chrono::duration<double> nuskaitymo_laiku_suma{0};
-try {
-    std::vector<Studentas> test_studentai;
-    for(int i=0; i<testu_kiekis; i++) {
-        auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-        studentu_ivestis_is_failo(test_studentai, testavimo_failas, praejo);
-        std::chrono::duration<double> sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-        nuskaitymo_laiku_suma+=sugaistas_laikas;
-        std::cout<<"Failo nuskaitymas uztruko: "<<sugaistas_laikas.count()<<"\n";
-        test_studentai.clear();
-    }
-    return nuskaitymo_laiku_suma.count()/testu_kiekis;
-} catch(std::exception& e) {
-    std::cerr<<"Ivyko klaida testuojant nuskaityma: "<<e.what()<<"\n";
-    return 0;
-}
 }
