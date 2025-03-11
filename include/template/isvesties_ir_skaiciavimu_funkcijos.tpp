@@ -143,9 +143,11 @@ void studentu_kategorizacija(Container& studentai, const int rodyti_pasirinkimas
             );
         neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
         islaike_studentai.assign(partition_iteratorius, studentai.end());
+        neislaike_studentai.shrink_to_fit();
+        islaike_studentai.shrink_to_fit();
+        studentai.clear();
     }
-
-    studentai.clear();
+    
     try {
         std::ofstream islaike_output("../data/output/islaike_studentai.txt");
         isvestis(islaike_studentai, islaike_output, rodyti_pasirinkimas);

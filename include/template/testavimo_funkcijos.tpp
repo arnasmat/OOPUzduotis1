@@ -42,13 +42,15 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
             );
         neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
         islaike_studentai.assign(partition_iteratorius, studentai.end());
+        neislaike_studentai.shrink_to_fit();
+        islaike_studentai.shrink_to_fit();
+        studentai.clear();
     }
-
-    studentai.clear();
 
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
     std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
+    return;
 
     try {
         nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
