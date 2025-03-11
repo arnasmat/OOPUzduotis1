@@ -13,9 +13,9 @@ int main() {
     const std::string isvesties_failo_pavadinimas{"../data/output/rezultatai.txt"};
     fs::path ivesties_failas{"../data/input/kursiokai.txt"};
 
-    std::vector<Studentas> studentai;
+    ivesties_patikrinimas(1,3);
+    std::list<Studentas> studentai;
     while(true){
-
         int menu{meniu(ivesties_failas)};
         bool praejo{true};
         switch(menu) {

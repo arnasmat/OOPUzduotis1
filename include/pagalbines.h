@@ -10,6 +10,8 @@
 #include <fstream>
 #include <chrono>
 #include <filesystem>
+#include <list>
+#include <deque>
 namespace fs = std::filesystem;
 
 struct Studentas {

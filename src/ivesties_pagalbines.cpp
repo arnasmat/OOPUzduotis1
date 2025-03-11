@@ -56,29 +56,6 @@ int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_sal
     }
 }
 
-void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_studentas) {
-    try {
-        std::cout<<"Iveskit studento varda ir pavarde (noredami baigti iveskite 'n'): ";
-        std::cin>>laikinas_studentas.vardas;
-
-        while (laikinas_studentas.vardas == "n" && studentai.empty()) {
-            std::cout<<"Iveskite bent viena studenta: \n";
-            std::cin>>laikinas_studentas.vardas;
-        }
-
-        if(laikinas_studentas.vardas == "n" && !studentai.empty()) {
-            return;
-        }
-
-        std::cin>>laikinas_studentas.pavarde;
-
-    } catch(std::exception& e) {
-        std::cerr<<"Ivyko klaida ivedant varda ir pavarde: "<<e.what()<<"\n";
-        laikinas_studentas.vardas = "Vardas";
-        laikinas_studentas.pavarde = "Pavarde";
-    }
-}
-
 void random_pazymiu_generavimas(Studentas& laikinas_studentas) {
     try {
         std::uniform_int_distribution<int> random(1, 10);

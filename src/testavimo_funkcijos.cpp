@@ -3,11 +3,7 @@
 //
 
 #include <testavimo_funkcijos.h>
-#include <failu_pasirinkimo_funkcijos.h>
-#include <ivesties_funkcijos.h>
-#include <ivesties_pagalbines.h>
-#include <rusiavimo_funkcijos.h>
-#include <isvesties_ir_skaiciavimu_funkcijos.h>
+
 
 void testavimo_rezimas(bool& praejo) {
         std::cout<<"Ka noretumete testuoti: \n"
@@ -66,77 +62,6 @@ void failu_kurimo_testavimas(const std::vector<int>& kiekiai) {
             testavimo_laikas+=sugaistas_laikas;
         }
         std::cout<<i << " vidurkis: " << testavimo_laikas.count()/3 <<"\n";
-    }
-}
-
-void studentu_kategorizacija_testavimas(std::vector<Studentas>& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal, std::chrono::duration<double>& testavimo_laikas, const int i) {
-    //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
-    std::vector<Studentas> islaike_studentai{};
-    std::vector<Studentas> neislaike_studentai{};
-
-    auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-    studentu_galutiniu_pazymiu_skaiciavimas(studentai);
-    studentu_rusiavimas(studentai, rusiuoti_pagal);
-    auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-    std::cout<<i<<" Irasu rusiavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-    testavimo_laikas+=sugaistas_laikas;
-
-
-    nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-    if(rusiuoti_pagal == 3) {
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_vidurkis>=5.0f;}
-            );
-            islaike_studentai.assign(studentai.begin(), partition_iteratorius);
-            neislaike_studentai.assign(partition_iteratorius, studentai.end());
-    } else if(rusiuoti_pagal == 4) {
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_vidurkis<=5.0f;}
-            );
-        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
-        islaike_studentai.assign(partition_iteratorius, studentai.end());
-    }else if(rusiuoti_pagal==5){
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_mediana>=5.0f;}
-            );
-            islaike_studentai.assign(studentai.begin(), partition_iteratorius);
-            neislaike_studentai.assign(partition_iteratorius, studentai.end());
-    } else if(rusiuoti_pagal==6){
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_mediana<=5.0f;}
-            );
-        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
-        islaike_studentai.assign(partition_iteratorius, studentai.end());
-    }
-
-    studentai.clear();
-
-    sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-    std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-    testavimo_laikas+=sugaistas_laikas;
-
-    try {
-        nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-        std::ofstream islaike_output("../data/output/islaike_studentai.txt");
-        isvestis(islaike_studentai, islaike_output, rodyti_pasirinkimas);
-        islaike_output.close();
-        sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-        std::cout<<i<<" Irasu islaikiusiuju irasymo i faila laikas: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-        testavimo_laikas+=sugaistas_laikas;
-
-        nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-        std::ofstream neislaike_output("../data/output/neislaike_studentai.txt");
-        isvestis(neislaike_studentai, neislaike_output, rodyti_pasirinkimas);
-        neislaike_output.close();
-        sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-        std::cout<<i<<" Irasu neislaikiusiuju irasymo i faila laikas: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-        testavimo_laikas+=sugaistas_laikas;
-    } catch(std::exception& e) {
-        std::cerr<<"Ivyko klaida isvedant i failus failus: "<<e.what()<<"\n";
     }
 }
 

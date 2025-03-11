@@ -7,12 +7,13 @@
 
 #include "pagalbines.h"
 
-
-
-int ivesties_patikrinimas(const int nuo, const int iki);
-int ivesties_patikrinimas(const int nuo, const int iki, const int sustabdymo_salyga);
-void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_studentas);
+int ivesties_patikrinimas(int nuo, int iki);
+int ivesties_patikrinimas(int nuo, int iki, int sustabdymo_salyga);
 void random_pazymiu_generavimas(Studentas& laikinas_studentas);
 
+//Apibrezti template faile. Naudoja ne vector, o template
+/*void vardu_ivestis(const std::vector<Studentas>& studentai, Studentas &laikinas_studentas);*/
+
+#include <template/ivesties_pagalbines.tpp>
 
 #endif //IVESTIES_PAGALBINES_H
