@@ -4,7 +4,7 @@
 | Komponentas | Specifikacija           |
 |-------------|-------------------------|
 | CPU         | Intel i7-13700H 2.40GHz |
-| RAM         | 16 GB                   |
+| RAM         | 16 GB DDR5              |
 | HDD         | SSD                     |
 
 # Programos testavimo rezultatai:
