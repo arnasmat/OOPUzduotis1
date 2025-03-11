@@ -21,7 +21,7 @@ void testavimo_rezimas(bool& praejo) {
                 ivesties_testavimas(praejo);
             break;
             case 3:
-                nuskaitymo_ir_isvesties_testavimas(kiekiai, praejo);
+                konteineriu_pasirinkimas_testavimui(kiekiai, praejo);
             break;
             default:
                 break;
@@ -65,26 +65,21 @@ void failu_kurimo_testavimas(const std::vector<int>& kiekiai) {
     }
 }
 
-void nuskaitymo_ir_isvesties_testavimas(const std::vector<int>& kiekiai, bool& praejo){
-    for(auto &i: kiekiai) {
-        std::chrono::duration<double> testavimo_laiku_suma{0};
-        for(int j=0; j<3; j++) {
-            std::vector<Studentas> temp_studentai{};
-            std::chrono::duration<double> testavimo_laikas{0};
-            fs::path failo_pavadinimas{"../data/input/studentai_isvestis" + std::to_string(i) + ".txt"};
-            auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-            studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
-            auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-            std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-            testavimo_laikas+=sugaistas_laikas;
-            studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
-            std::cout<<"\n";
-            testavimo_laiku_suma +=testavimo_laikas;
-        }
-        std::cout<<i << " vidurkis: " << testavimo_laiku_suma.count()/3 <<"\n";
-        std::cout<<"\n---------------------------------------------------\n";
-        std::cout<<"\n---------------------------------------------------\n";
-        std::cout<<"\n---------------------------------------------------\n";
+void konteineriu_pasirinkimas_testavimui(const std::vector<int>& kiekiai, bool& praejo) {
+    std::cout<<"Su kokiu konteineriu tipu noretumete testuoti: \n"
+        <<"1. Vektoriais\n"
+        <<"2. List'ais\n"
+        <<"3. Deque\n";
+    int konteineriu_pasirinkimas = ivesties_patikrinimas(1,3);
+
+    if(konteineriu_pasirinkimas == 1) {
+        std::vector<Studentas> temp_studentai{};
+        nuskaitymo_ir_isvesties_testavimas(temp_studentai, kiekiai, praejo);
+    } else if(konteineriu_pasirinkimas ==2) {
+        std::list<Studentas> temp_studentai{};
+        nuskaitymo_ir_isvesties_testavimas(temp_studentai, kiekiai, praejo);
+    } else {
+        std::deque<Studentas> temp_studentai{};
+        nuskaitymo_ir_isvesties_testavimas(temp_studentai, kiekiai, praejo);
     }
 }
