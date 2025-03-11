@@ -9,7 +9,7 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
     studentu_rusiavimas(studentai, rusiuoti_pagal);
     auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-    std::cout<<i<<" Irasu rusiavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+    // std::cout<<i<<" Irasu rusiavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
 
 
@@ -48,7 +48,7 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
     }
 
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-    std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+    // std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
     return;
 
@@ -83,17 +83,14 @@ void nuskaitymo_ir_isvesties_testavimas(Container& temp_studentai, const std::ve
             auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
             studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
             auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-            std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+            // std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
             testavimo_laikas+=sugaistas_laikas;
             studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
-            std::cout<<"\n";
+            // std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
             testavimo_laiku_suma +=testavimo_laikas;
             temp_studentai.clear();
         }
         std::cout<<i << " vidurkis: " << testavimo_laiku_suma.count()/3 <<"\n";
-        std::cout<<"\n---------------------------------------------------\n";
-        std::cout<<"\n---------------------------------------------------\n";
-        std::cout<<"\n---------------------------------------------------\n";
+        // std::cout<<"\n---------------------------------------------------\n";
     }
 }
