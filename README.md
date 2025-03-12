@@ -18,6 +18,14 @@
 ![img_2.png](img/S1_Deque.png)
 </br>
 
+## Strategija 2
+# Su Vector
+![img.png](img/S2_Vec.png)
+# Su List
+![img_1.png](img/S2_List.png)
+# Su Deque
+![img_2.png](img/S2_Deque.png)
+</br>
 
 -------------------------
 # Programos testavimo rezultatai pradiniam release:
