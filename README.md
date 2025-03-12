@@ -7,7 +7,20 @@
 | RAM         | 16 GB DDR5              |
 | HDD         | SSD                     |
 
-# Programos testavimo rezultatai:
+# Strategiju testavimo rezultatai
+
+## Strategija 1
+# Su Vector
+![img.png](img/S1_Vec.png)
+# Su List
+![img_1.png](img/S1_List.png)
+# Su Deque
+![img_2.png](img/S1_Deque.png)
+</br>
+
+
+-------------------------
+# Programos testavimo rezultatai pradiniam release:
 Testuojama tik failo nuskaitymas, įrašų rūšiavimas bei kategorizavimas. Pateikiamas trijų testų vidurkis. </br>
 Visi failai turi po 5 ND pažymius.
 ## Testavimas su vector:
