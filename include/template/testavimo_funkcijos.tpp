@@ -52,7 +52,6 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
     // std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
-    return;
 
     try {
         nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
@@ -77,26 +76,33 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
 
 template <typename Container>
 void nuskaitymo_ir_isvesties_testavimas(Container& temp_studentai, const std::vector<int>& kiekiai, bool& praejo){
-    for(auto &i: kiekiai) {
-        std::chrono::duration<double> testavimo_laiku_suma{0};
-        for(int j=0; j<3; j++) {
-            std::chrono::duration<double> testavimo_laikas{0};
-            fs::path failo_pavadinimas{"../data/input/studentai_isvestis" + std::to_string(i) + ".txt"};
-            auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
-            studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
-            auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
-            // std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
-            testavimo_laikas+=sugaistas_laikas;
-            // studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            // studentu_kategorizacija_1_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            // studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            studentu_kategorizacija_3_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            // std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
-            testavimo_laiku_suma +=testavimo_laikas;
-            temp_studentai.clear();
+    try {
+        for(auto &i: kiekiai) {
+            std::chrono::duration<double> testavimo_laiku_suma{0};
+            for(int j=0; j<3; j++) {
+                std::chrono::duration<double> testavimo_laikas{0};
+                fs::path failo_pavadinimas{"../data/input/studentai_isvestis" + std::to_string(i) + ".txt"};
+                auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+                studentu_ivestis_is_failo(temp_studentai, failo_pavadinimas, praejo);
+                auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+                // std::cout<<"Failo su "<<i<<" studentais nuskaitymas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+                testavimo_laikas+=sugaistas_laikas;
+                //Greiciausias vis tiek senas metodas lol
+                studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+                // studentu_kategorizacija_1_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+                // studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+                // studentu_kategorizacija_3_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+                // std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
+                testavimo_laiku_suma +=testavimo_laikas;
+                temp_studentai.clear();
+            }
+            std::cout<<i << " vidurkis: " << testavimo_laiku_suma.count()/3 <<"\n";
+            // std::cout<<"\n---------------------------------------------------\n";
         }
-        std::cout<<i << " vidurkis: " << testavimo_laiku_suma.count()/3 <<"\n";
-        // std::cout<<"\n---------------------------------------------------\n";
+    }
+    catch(std::exception &e) {
+        std::cerr<<"Ivyko klaida testuojant "<<e.what()<<"\n";
+        std::cerr<<"Galbut testavimo failai nesugeneruoti? Pabandykite paleisti testavimo failu kurima. \n";
     }
 }
 

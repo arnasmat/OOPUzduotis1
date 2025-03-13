@@ -86,41 +86,36 @@ void studentu_ivestis_random_3(Container& studentai) {
 
 template <typename Container>
 void studentu_ivestis_is_failo(Container& studentai, const fs::path& ivesties_failo_pavadinimas, bool& praejo) {
-    std::ifstream ivesties_failas(ivesties_failo_pavadinimas);
-    std::stringstream buffer{};
-    try {
-        if(!ivesties_failas || !ivesties_failas.is_open()) {
-            praejo = false;
-            throw std::runtime_error("Failas nerastas.");
+        std::ifstream ivesties_failas(ivesties_failo_pavadinimas);
+        std::stringstream buffer{};
+            if(!ivesties_failas || !ivesties_failas.is_open()) {
+                praejo = false;
+                throw std::runtime_error("Failas nerastas. ");
+            }
+            buffer << ivesties_failas.rdbuf();
+            ivesties_failas.close();
+
+        std::vector<std::string> split_linijos{};
+        std::string linija{};
+
+        //Skips the first line of ivesties_failas as it stores the information about each column.
+        std::getline(buffer, linija);
+
+        while (std::getline(buffer, linija)) {
+            Studentas laikinas_studentas{};
+            //pakeiciau i istringstreama, nes pratestavus atrodo greiciau xd, jeigu sukels bedu - pakeist atgal
+            std::istringstream ivestis(linija);
+            std::string vardas{}, pavarde{};
+            ivestis>>vardas;
+            laikinas_studentas.vardas = vardas;
+            ivestis>>pavarde;
+            laikinas_studentas.pavarde = pavarde;
+            int pazymys{0};
+            while(ivestis>>pazymys) {
+                laikinas_studentas.pazymiai.push_back(pazymys);
+            }
+            laikinas_studentas.egzamino_rezultatas = laikinas_studentas.pazymiai.back();
+            laikinas_studentas.pazymiai.pop_back();
+            studentai.push_back(laikinas_studentas);
         }
-    buffer << ivesties_failas.rdbuf();
-    ivesties_failas.close();
-    } catch(const std::exception& e){
-        std::cerr<<"Klaida su failu: "<<e.what()<<"\n";
-        return;
-    }
-
-    std::vector<std::string> split_linijos{};
-    std::string linija{};
-
-    //Skips the first line of ivesties_failas as it stores the information about each column.
-    std::getline(buffer, linija);
-
-    while (std::getline(buffer, linija)) {
-        Studentas laikinas_studentas{};
-        //pakeiciau i istringstreama, nes pratestavus atrodo greiciau xd, jeigu sukels bedu - pakeist atgal
-        std::istringstream ivestis(linija);
-        std::string vardas{}, pavarde{};
-        ivestis>>vardas;
-        laikinas_studentas.vardas = vardas;
-        ivestis>>pavarde;
-        laikinas_studentas.pavarde = pavarde;
-        int pazymys{0};
-        while(ivestis>>pazymys) {
-            laikinas_studentas.pazymiai.push_back(pazymys);
-        }
-        laikinas_studentas.egzamino_rezultatas = laikinas_studentas.pazymiai.back();
-        laikinas_studentas.pazymiai.pop_back();
-        studentai.push_back(laikinas_studentas);
-    }
 }

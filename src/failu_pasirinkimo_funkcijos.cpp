@@ -61,10 +61,12 @@ fs::path pasirinkti_faila_is_testiniu() {
     for(int i=0; i<static_cast<int>(testiniai_failai.size()); i++) {
         std::cout<<i+1<<". "<<testiniai_failai[i].filename()<<"\n";
     }
+        if(testiniai_failai.empty()){throw;}
     int failo_pasirinkimas{ivesties_patikrinimas(1, static_cast<int>(testiniai_failai.size()))};
     return testiniai_failai[failo_pasirinkimas-1];
     } catch(std::exception& e) {
         std::cerr<<"Ivyko klaida pasirenkant faila: "<<e.what()<<"\n";
+        std::cerr<<"Testavimas negalimas, nes neturite testavimo failų. Bandykite kitą testavimo režimą.";
         return "";
     }
 }
