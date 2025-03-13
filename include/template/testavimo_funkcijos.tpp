@@ -2,8 +2,8 @@
 template <typename Container>
 void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal, std::chrono::duration<double>& testavimo_laikas, const int i) {
     //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
-    std::vector<Studentas> islaike_studentai{};
-    std::vector<Studentas> neislaike_studentai{};
+    Container islaike_studentai{};
+    Container neislaike_studentai{};
 
     auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
@@ -42,8 +42,10 @@ void studentu_kategorizacija_testavimas(Container& studentai, const int rodyti_p
             );
         neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
         islaike_studentai.assign(partition_iteratorius, studentai.end());
-        neislaike_studentai.shrink_to_fit();
-        islaike_studentai.shrink_to_fit();
+        if constexpr (!std::is_same_v<Container, std::list<Studentas>>) {
+            neislaike_studentai.shrink_to_fit();
+            islaike_studentai.shrink_to_fit();
+        }
         studentai.clear();
     }
 
@@ -87,7 +89,8 @@ void nuskaitymo_ir_isvesties_testavimas(Container& temp_studentai, const std::ve
             testavimo_laikas+=sugaistas_laikas;
             // studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
             // studentu_kategorizacija_1_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+            // studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+            studentu_kategorizacija_3_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
             // std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
             testavimo_laiku_suma +=testavimo_laikas;
             temp_studentai.clear();
@@ -100,8 +103,8 @@ void nuskaitymo_ir_isvesties_testavimas(Container& temp_studentai, const std::ve
 template <typename Container>
 void studentu_kategorizacija_1_strategija_testavimas(Container& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal, std::chrono::duration<double>& testavimo_laikas, const int i) {
     //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
-    std::vector<Studentas> islaike_studentai{};
-    std::vector<Studentas> neislaike_studentai{};
+    Container islaike_studentai{};
+    Container neislaike_studentai{};
 
     auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
@@ -127,8 +130,10 @@ void studentu_kategorizacija_1_strategija_testavimas(Container& studentai, const
             }
         }
     }
-    neislaike_studentai.shrink_to_fit();
-    islaike_studentai.shrink_to_fit();
+    if constexpr (!std::is_same_v<Container, std::list<Studentas>>) {
+        neislaike_studentai.shrink_to_fit();
+        islaike_studentai.shrink_to_fit();
+    }
     studentai.clear();
 
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
@@ -140,8 +145,8 @@ void studentu_kategorizacija_1_strategija_testavimas(Container& studentai, const
 template <typename Container>
 void studentu_kategorizacija_2_strategija_testavimas(Container& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal, std::chrono::duration<double>& testavimo_laikas, const int i) {
     //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
-    std::vector<Studentas> islaike_studentai{};
-    std::vector<Studentas> neislaike_studentai{};
+    Container islaike_studentai{};
+    Container neislaike_studentai{};
 
     auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
     studentu_galutiniu_pazymiu_skaiciavimas(studentai);
@@ -169,10 +174,61 @@ void studentu_kategorizacija_2_strategija_testavimas(Container& studentai, const
             }
         }
     }
-    islaike_studentai.shrink_to_fit();
+    if constexpr (!std::is_same_v<Container, std::list<Studentas>>) {
+        islaike_studentai.shrink_to_fit();
+    }
 
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
     // std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
     // Toliau nerasau, nes testavimui reikalinga tik tiek :)
+}
+
+template <typename Container>
+void studentu_kategorizacija_3_strategija_testavimas(Container& studentai, const int rodyti_pasirinkimas, const int rusiuoti_pagal, std::chrono::duration<double>& testavimo_laikas, const int i) {
+    //ekvivalentu "kietekams" ir "vargsiukams", tiesiog formaliau pavadinta
+    Container neislaike_studentai{};
+
+    auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+    studentu_galutiniu_pazymiu_skaiciavimas(studentai);
+    studentu_rusiavimas(studentai, rusiuoti_pagal);
+    auto sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+    // std::cout<<i<<" Irasu rusiavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+    testavimo_laikas+=sugaistas_laikas;
+
+    nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
+    if(rusiuoti_pagal == 3) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_vidurkis>=5.0f;}
+        );
+        neislaike_studentai.assign(partition_iteratorius, studentai.end());
+        studentai.resize(std::distance(studentai.begin(), partition_iteratorius));
+    } else if(rusiuoti_pagal == 4) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_vidurkis<=5.0f;}
+        );
+        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
+        studentai.erase(studentai.begin(), partition_iteratorius);
+    } else if(rusiuoti_pagal == 5) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_mediana>=5.0f;}
+        );
+        neislaike_studentai.assign(partition_iteratorius, studentai.end());
+        studentai.resize(std::distance(studentai.begin(), partition_iteratorius));
+    } else if(rusiuoti_pagal == 6) {
+        auto partition_iteratorius = std::partition_point(
+            studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) {return studentas.galutinis_mediana<=5.0f;}
+        );
+        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
+        studentai.erase(studentai.begin(), partition_iteratorius);
+    }
+
+    sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
+    // std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
+    testavimo_laikas+=sugaistas_laikas;
+
 }
