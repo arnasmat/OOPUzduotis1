@@ -10,21 +10,21 @@
 # Strategiju testavimo rezultatai
 
 ## Strategija 1
-# Su Vector
+### Su Vector
 ![S1_Vector](img/S1_Vec.png)
-# Su List
+### Su List
 ![S1_List](img/S1_List.png)
-# Su Deque
+### Su Deque
 ![S1_Deque](img/S1_Deque.png)
 </br>
 
 ## Strategija 2
 (Patobulinta versija)
-# Su Vector
+### Su Vector
 ![img.png](img/S2_Vec.png)
-# Su List
+### Su List
 ![img_1.png](img/S2_List.png)
-# Su Deque
+### Su Deque
 ![img_2.png](img/S2_Deque.png)
 </br>
 
@@ -32,11 +32,11 @@
 # Programos testavimo rezultatai pradiniam release:
 Testuojama tik failo nuskaitymas, įrašų rūšiavimas bei kategorizavimas. Pateikiamas trijų testų vidurkis. </br>
 Visi failai turi po 5 ND pažymius.
-## Testavimas su vector:
+### Testavimas su vector:
 ![img.png](img/img.png)
 
-## Testavimas su list:
+### Testavimas su list:
 ![img_1.png](img/img_1.png)
 
-## Testavimas su deque:
+### Testavimas su deque:
 ![img_2.png](img/img_2.png) 
