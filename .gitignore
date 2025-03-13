@@ -32,3 +32,6 @@
 *.app
 
 data
+.idea/
+build/
+cmake-build-debug/
