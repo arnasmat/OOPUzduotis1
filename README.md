@@ -11,14 +11,15 @@
 
 ## Strategija 1
 # Su Vector
-![img.png](img/S1_Vec.png)
+![S1_Vector](img/S1_Vec.png)
 # Su List
-![img_1.png](img/S1_List.png)
+![S1_List](img/S1_List.png)
 # Su Deque
-![img_2.png](img/S1_Deque.png)
+![S1_Deque](img/S1_Deque.png)
 </br>
 
 ## Strategija 2
+(Patobulinta versija)
 # Su Vector
 ![img.png](img/S2_Vec.png)
 # Su List
