@@ -1,4 +1,4 @@
-**# OOPUzduotis1 (Studentų surašymo ir skirstymo programa) - v1.0
+# OOPUzduotis1 (Studentų surašymo ir skirstymo programa) - v1.0
 Studentų pažymių surašymo (ranka, automatiškai sugeneruojamų arba iš failo) bei vidurkių skaičiavimo ir studentų
 kategorizacijos į dvi grupes programa </br>
 
