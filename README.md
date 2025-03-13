@@ -28,6 +28,16 @@
 ![img_2.png](img/S2_Deque.png)
 </br>
 
+## Strategija 3
+Pagal strategija 2 naudojant std::stable_partition
+### Su Vector
+![img.png](img/S3_Vec.png)
+### Su List
+![img_1.png](img/S3_List.png)
+### Su Deque
+![img_2.png](img/S3_Deque.png)
+</br>
+
 -------------------------
 # Programos testavimo rezultatai pradiniam release:
 Testuojama tik failo nuskaitymas, įrašų rūšiavimas bei kategorizavimas. Pateikiamas trijų testų vidurkis. </br>

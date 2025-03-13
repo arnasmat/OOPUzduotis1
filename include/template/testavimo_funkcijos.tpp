@@ -89,8 +89,8 @@ void nuskaitymo_ir_isvesties_testavimas(Container& temp_studentai, const std::ve
             testavimo_laikas+=sugaistas_laikas;
             // studentu_kategorizacija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
             // studentu_kategorizacija_1_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
-            // studentu_kategorizacija_3_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+            // studentu_kategorizacija_2_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
+            studentu_kategorizacija_3_strategija_testavimas(temp_studentai, 3, 3,testavimo_laikas, i);
             // std::cout<<i<<" irasu testavimo laikas: "<<testavimo_laikas.count()<<"\n";
             testavimo_laiku_suma +=testavimo_laikas;
             temp_studentai.clear();
@@ -113,17 +113,10 @@ void studentu_kategorizacija_1_strategija_testavimas(Container& studentai, const
     // std::cout<<i<<" Irasu rusiavimas truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
 
-    if(rusiuoti_pagal==3 || rusiuoti_pagal==4) {
+    //Testavimui tik sis variantas, nes jis ir naudojamas testuoti :).
+    if(rusiuoti_pagal==3) {
         for(auto &stud :studentai) {
             if(stud.galutinis_vidurkis >= 5.0) {
-                islaike_studentai.push_back(stud);
-            } else {
-                neislaike_studentai.push_back(stud);
-            }
-        }
-    } else if(rusiuoti_pagal==5 || rusiuoti_pagal==6) {
-        for(auto &stud :studentai) {
-            if(stud.galutinis_mediana >= 5.0) {
                 islaike_studentai.push_back(stud);
             } else {
                 neislaike_studentai.push_back(stud);
@@ -188,32 +181,10 @@ void studentu_kategorizacija_3_strategija_testavimas(Container& studentai, const
         auto partition_iteratorius = std::partition_point(
             studentai.begin(), studentai.end(),
             [](const Studentas& studentas) {return studentas.galutinis_vidurkis>=5.0f;}
-        );
+            );
         neislaike_studentai.assign(partition_iteratorius, studentai.end());
         studentai.resize(std::distance(studentai.begin(), partition_iteratorius));
-    } else if(rusiuoti_pagal == 4) {
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_vidurkis<=5.0f;}
-        );
-        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
-        studentai.erase(studentai.begin(), partition_iteratorius);
-    } else if(rusiuoti_pagal == 5) {
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_mediana>=5.0f;}
-        );
-        neislaike_studentai.assign(partition_iteratorius, studentai.end());
-        studentai.resize(std::distance(studentai.begin(), partition_iteratorius));
-    } else if(rusiuoti_pagal == 6) {
-        auto partition_iteratorius = std::partition_point(
-            studentai.begin(), studentai.end(),
-            [](const Studentas& studentas) {return studentas.galutinis_mediana<=5.0f;}
-        );
-        neislaike_studentai.assign(studentai.begin(), partition_iteratorius);
-        studentai.erase(studentai.begin(), partition_iteratorius);
     }
-
     sugaistas_laikas = std::chrono::high_resolution_clock::now() - nuskaitymo_laikas;
     // std::cout<<i<<" Irasu kategorizavimas istrinant originalu vektoriu truko: "<<std::chrono::duration<double>(sugaistas_laikas).count()<<"\n";
     testavimo_laikas+=sugaistas_laikas;
