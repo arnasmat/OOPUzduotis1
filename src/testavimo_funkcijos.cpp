@@ -29,13 +29,14 @@ void testavimo_rezimas(bool& praejo) {
 }
 
 void ivesties_testavimas(bool& praejo) {
+    try {
     fs::path testavimo_failas{pasirinkti_faila_is_testiniu()};
     std::cout<<"Iveskite kiek testu norite daryti (nuo 1 iki 100): \n";
     int testu_kiekis{ivesties_patikrinimas(1,100)};
     praejo=false;
 
     std::chrono::duration<double> nuskaitymo_laiku_suma{0};
-    try {
+
         std::vector<Studentas> test_studentai;
         for(int i=0; i<testu_kiekis; i++) {
             auto nuskaitymo_laikas = std::chrono::high_resolution_clock::now();
